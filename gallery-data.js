@@ -84,6 +84,19 @@ window.GALLERY_DATA = {
       "height": 640
     },
     {
+      "file": "photos/2026-11-16-m33-triangulum-45m-boosted.jpg",
+      "thumb": "photos/thumbs/2026-11-16-m33-triangulum-45m-boosted.jpg",
+      "title": "M33, Triangulum Galaxy",
+      "date": "2026-11-16",
+      "time": "19:06",
+      "caption": "45 min of integration, the same stack with the colours pushed harder · captured 16 Nov 2026, 19:06.",
+      "group": "m33-triangulum",
+      "integration": 45.0,
+      "variant": "boosted",
+      "width": 640,
+      "height": 640
+    },
+    {
       "file": "photos/2026-11-16-m33-triangulum-45m.jpg",
       "thumb": "photos/thumbs/2026-11-16-m33-triangulum-45m.jpg",
       "title": "M33, Triangulum Galaxy",
