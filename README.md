@@ -78,8 +78,11 @@ U `gallery-data.js` uredi `title` / `date` / `caption`:
 Skripta čuva tvoje `title`/`date`/`time`/`caption` — ponovno pokretanje ih ne briše.
 `time` (`"20:23"`) je neobavezan i služi samo za redoslijed unutar iste noći.
 
-**Redoslijed na stranici:** kartice idu od najstarije snimke prema najnovijoj
-(`date` + `time` naslovne ekspozicije).
+**Redoslijed na stranici:** najnovija snimka je prva pločica gore lijevo, starije
+idu prema dolje desno (`date` + `time` naslovne ekspozicije, silazno). Nova
+*verzija* postojećeg objekta ne mijenja redoslijed — kartica ostaje na svom
+kronološkom mjestu. Galerija je mreža pločica (masonry) u cijelom kadru, bez
+horizontalnog scrolla.
 
 Naslov sajta, podnaslov, intro i footer mijenjaš u `index.html` (intro tekst) i u
 `SITE` rječniku na vrhu `scripts/build_gallery.py` (title/subtitle/footer).

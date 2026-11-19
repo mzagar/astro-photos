@@ -17,7 +17,6 @@
       --accent: #7fb0ff;
       --line: rgba(255, 255, 255, 0.08);
       --radius: 12px;
-      --frame-h: clamp(240px, 46vh, 420px);
     }
 
     * { box-sizing: border-box; }
@@ -85,18 +84,13 @@
 
     a:hover { border-bottom-color: var(--accent); }
 
-    /* ---------- filmstrip ---------- */
+    /* ---------- tiles ---------- */
 
     .gallery {
       margin-top: 52px;
     }
 
     .gallery-head {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 4px 16px;
-      align-items: baseline;
-      justify-content: space-between;
       margin-bottom: 12px;
     }
 
@@ -109,32 +103,22 @@
       color: var(--muted);
     }
 
-    .strip-shell {
-      position: relative;
-    }
-
-    .strip {
-      display: flex;
-      gap: 12px;
-      padding: 2px 2px 10px;
-      overflow-x: auto;
-      overscroll-behavior-x: contain;
-      scroll-snap-type: x proximity;
-      scroll-behavior: smooth;
-      scrollbar-width: thin;
-      scrollbar-color: rgba(255, 255, 255, 0.16) transparent;
-    }
-
-    .strip::-webkit-scrollbar { height: 8px; }
-    .strip::-webkit-scrollbar-thumb {
-      border-radius: 8px;
-      background: rgba(255, 255, 255, 0.14);
+    /* Masonry without JavaScript layout maths beyond a row span: every card
+       is a grid item spanning as many 6px rows as its picture needs. */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr));
+      grid-auto-rows: 6px;
+      column-gap: 12px;
+      row-gap: 0;
+      align-items: start;
     }
 
     .card {
-      flex: 0 0 auto;
-      display: flex;
-      flex-direction: column;
+      position: relative;
+      display: block;
+      width: 100%;
+      margin: 0 0 12px;
       padding: 0;
       border: 1px solid var(--line);
       border-radius: var(--radius);
@@ -143,7 +127,6 @@
       font: inherit;
       text-align: left;
       cursor: zoom-in;
-      scroll-snap-align: start;
       overflow: hidden;
       transition: transform 0.18s ease, border-color 0.18s ease;
     }
@@ -163,8 +146,8 @@
 
     .card img {
       display: block;
-      height: var(--frame-h);
-      width: auto;
+      width: 100%;
+      height: auto;
       background: var(--bg-soft);
     }
 
@@ -183,12 +166,22 @@
     }
 
     .card .cap {
+      position: absolute;
+      inset: auto 0 0 0;
       display: block;
-      padding: 9px 12px 11px;
+      padding: 34px 12px 10px;
+      background: linear-gradient(
+        to top,
+        rgba(6, 9, 14, 0.94) 0%,
+        rgba(6, 9, 14, 0.72) 45%,
+        rgba(6, 9, 14, 0) 100%
+      );
+      pointer-events: none;
     }
 
     .card .title {
       display: block;
+      color: #f2f5fa;
       font-weight: 600;
       font-size: 0.86rem;
       line-height: 1.35;
@@ -197,32 +190,9 @@
     .card .meta {
       display: block;
       margin-top: 2px;
-      color: var(--muted);
+      color: #c2cbdb;
       font-size: 0.75rem;
     }
-
-    .strip-btn {
-      position: absolute;
-      top: calc(var(--frame-h) / 2);
-      display: grid;
-      place-items: center;
-      width: 38px;
-      height: 38px;
-      margin-top: -19px;
-      border: 1px solid var(--line);
-      border-radius: 50%;
-      background: rgba(12, 15, 21, 0.9);
-      color: var(--fg);
-      font-size: 1.25rem;
-      line-height: 1;
-      cursor: pointer;
-    }
-
-    .strip-btn:hover { border-color: var(--accent); }
-    .strip-btn[hidden] { display: none; }
-
-    .strip-prev { left: 6px; }
-    .strip-next { right: 6px; }
 
     .empty {
       padding: 24px;
@@ -461,9 +431,7 @@
     @media (max-width: 640px) {
       body { padding: 0 16px 40px; }
       .hero { padding: 44px 0 0; }
-      :root { --frame-h: clamp(190px, 38vh, 280px); }
       .setup { font-size: 0.86rem; }
-      .strip-btn { display: none; }
       .lightbox { padding: 12px; }
       .lb-media img { max-height: 58vh; }
       .lb-prev, .lb-next { display: none; }
@@ -503,11 +471,7 @@
         <h2 id="gallery-heading">Gallery</h2>
       </div>
 
-      <div class="strip-shell">
-        <button class="strip-btn strip-prev" type="button" aria-label="Scroll left" hidden>‹</button>
-        <div class="strip" id="strip" tabindex="0" role="group" aria-label="Photos"></div>
-        <button class="strip-btn strip-next" type="button" aria-label="Scroll right" hidden>›</button>
-      </div>
+      <div class="grid" id="grid" role="group" aria-label="Photos"></div>
     </section>
 
     <footer>
@@ -550,9 +514,8 @@
       var site = data.site || {};
       var photos = Array.isArray(data.photos) ? data.photos : [];
 
-      var strip = document.getElementById('strip');
-      var btnLeft = document.querySelector('.strip-prev');
-      var btnRight = document.querySelector('.strip-next');
+      var grid = document.getElementById('grid');
+      var cards = [];
 
       var lightbox = document.getElementById('lightbox');
       var lbMedia = document.querySelector('.lb-media');
@@ -642,10 +605,10 @@
           group.cover = group.variants[0];
         });
         out.sort(function (a, b) {
-          // oldest first; the time of day breaks ties within one night
+          // newest first; the time of day breaks ties within one night
           var ka = String(a.cover.date || '') + ' ' + String(a.cover.time || '');
           var kb = String(b.cover.date || '') + ' ' + String(b.cover.time || '');
-          return ka.localeCompare(kb);
+          return kb.localeCompare(ka);
         });
         return out;
       }
@@ -653,7 +616,7 @@
       var groups = buildGroups(photos);
 
       if (!groups.length) {
-        strip.append(el('p', 'empty', 'No photos yet. Drop exports into masters/ and run scripts/build_gallery.py.'));
+        grid.append(el('p', 'empty', 'No photos yet. Drop exports into masters/ and run scripts/build_gallery.py.'));
         return;
       }
 
@@ -689,37 +652,37 @@
         );
         card.append(frame, caption);
         card.addEventListener('click', function () { open(index); });
-        strip.append(card);
+        grid.append(card);
+        cards.push({
+          node: card,
+          ratio: (cover.width && cover.height) ? cover.height / cover.width : 1.25
+        });
       });
 
-      /* ---------- strip paging ---------- */
+      /* ---------- masonry layout ---------- */
 
-      var stepPx = 0;
+      var ROW_UNIT = 6;
+      var TILE_GAP = 12;
 
-      function measure() {
-        var card = strip.querySelector('.card');
-        stepPx = card ? card.getBoundingClientRect().width + 12 : strip.clientWidth;
+      function layout() {
+        if (!cards.length) return;
+        var width = cards[0].node.getBoundingClientRect().width - 2; // minus the 1px border
+        if (!width) return;
+        cards.forEach(function (item) {
+          var height = Math.round(width * item.ratio);
+          item.node.style.gridRowEnd = 'span ' + Math.ceil((height + TILE_GAP) / ROW_UNIT);
+        });
       }
 
-      function updateArrows() {
-        var overflow = strip.scrollWidth - strip.clientWidth;
-        var show = overflow > 8 && window.innerWidth > 640;
-        btnLeft.hidden = !show || strip.scrollLeft <= 2;
-        btnRight.hidden = !show || strip.scrollLeft >= overflow - 2;
-      }
+      layout();
 
-      function scrollByStep(direction) {
-        if (!stepPx) measure();
-        strip.scrollLeft += direction * stepPx;
-      }
-
-      btnLeft.addEventListener('click', function () { scrollByStep(-1); });
-      btnRight.addEventListener('click', function () { scrollByStep(1); });
-      strip.addEventListener('scroll', updateArrows, { passive: true });
-      window.addEventListener('resize', function () { measure(); updateArrows(); });
-
-      measure();
-      updateArrows();
+      var resizeQueued = false;
+      window.addEventListener('resize', function () {
+        if (resizeQueued) return;
+        resizeQueued = true;
+        var raf = window.requestAnimationFrame || function (fn) { fn(); };
+        raf(function () { resizeQueued = false; layout(); });
+      });
 
       /* ---------- lightbox ---------- */
 
@@ -973,10 +936,6 @@
           else if (event.key === 'ArrowLeft') step(-1);
           else if (event.key === 'ArrowRight') step(1);
           return;
-        }
-        if (document.activeElement === strip && (event.key === 'ArrowLeft' || event.key === 'ArrowRight')) {
-          event.preventDefault();
-          scrollByStep(event.key === 'ArrowLeft' ? -1 : 1);
         }
       });
     })();
