@@ -3,3 +3,7 @@ masters/
 raw/
 .DS_Store
 photos/.DS_Store
+
+# Python
+__pycache__/
+*.pyc

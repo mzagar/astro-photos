@@ -6,8 +6,13 @@ Usage:
 
 Masters default to ./masters - only the finished, watermarked Seestar exports
 go there. Every JPEG/PNG/TIFF is resized twice (big for the lightbox, small
-for the grid) into ./photos and listed in ./gallery-data.js. Sources smaller
-than the target size are never upscaled.
+for the filmstrip) into ./photos and listed in ./gallery-data.js. Sources
+smaller than the target size are never upscaled.
+
+A trailing integration stamp on the file name groups versions of the same
+object, e.g. `2026-11-19_ic405-plamtecica-53m.jpg` and
+`2026-11-19_ic405-plamtecica-20m.jpg` both belong to `ic405-plamtecica`; the
+page shows one card per object and puts the longest exposure on the cover.
 
 Titles, dates and captions already written into gallery-data.js are preserved
 across runs; edits to that file are never overwritten.
@@ -35,10 +40,24 @@ FULL_QUALITY = 88
 THUMB_QUALITY = 80
 SOURCE_SUFFIXES = {".jpg", ".jpeg", ".png", ".tif", ".tiff"}
 
+# A trailing integration stamp on the file name groups versions of one object:
+#   2026-11-19_ic405-plamtecica-53m.jpg     -> group `ic405-plamtecica`, 53 min
+#   2026-11-18_m42-orion-397x10s.jpg        -> group `m42-orion`, 66.2 min
+# An optional label after the stamp separates versions of the same length:
+#   2026-11-18_m27-dumbbell-7m-crop.jpg     -> group `m27-dumbbell`, 7 min, "crop"
+#   2026-11-18_m27-dumbbell-7m-wide.jpg     -> group `m27-dumbbell`, 7 min, "wide"
+VARIANT_RE = re.compile(
+    r"^(?P<base>.+?)-(?:(?P<count>\d+(?:\.\d+)?)x(?P<seconds>\d+(?:\.\d+)?)s"
+    r"|(?P<minutes>\d+(?:\.\d+)?)m)(?:-(?P<label>[a-z0-9]+(?:-[a-z0-9]+)*))?$"
+)
+
 SITE = {
-    "title": "Astro Photos",
-    "subtitle": "Seestar S50 Pro",
-    "footer": "Snimljeno s ZWO Seestar S50 Pro · složeno u aplikaciji Seestar",
+    "title": "Deep Sky from Donja Stubica",
+    "subtitle": "Astro photos with a ZWO Seestar S50 Pro",
+    "footer": (
+        "Shot with a ZWO Seestar S50 Pro · stacked and processed in the Seestar app · "
+        "Donja Stubica, Croatia"
+    ),
 }
 
 
@@ -56,6 +75,19 @@ def slugify(name: str) -> str:
     slug = name.lower().strip()
     slug = re.sub(r"[^a-z0-9]+", "-", slug)
     return slug.strip("-")
+
+
+def split_variant(stem: str) -> tuple[str, float | None, str]:
+    """Separate an integration stamp (and its optional label) from the object name."""
+    match = VARIANT_RE.match(stem)
+    if match is None:
+        return stem, None, ""
+    if match.group("minutes") is not None:
+        minutes = float(match.group("minutes"))
+    else:
+        minutes = float(match.group("count")) * float(match.group("seconds")) / 60
+    label = (match.group("label") or "").replace("-", " ")
+    return match.group("base"), round(minutes, 1), label
 
 
 ASTRO_PREFIXES = re.compile(r"^(ngc|ic|sh2|ldn|vdb|abell|pgc|arp|m)(\d.*)$", re.IGNORECASE)
@@ -152,6 +184,7 @@ def main() -> None:
 
     for source in masters:
         slug = slugify(source.stem)
+        group, integration, variant = split_variant(source.stem)
         full = PHOTOS_DIR / f"{slug}.jpg"
         thumb = THUMBS_DIR / f"{slug}.jpg"
 
@@ -161,7 +194,7 @@ def main() -> None:
         rel_full = full.relative_to(ROOT).as_posix()
         rel_thumb = thumb.relative_to(ROOT).as_posix()
         previous = existing.get(rel_full, {})
-        date, default_title = split_name(source.stem)
+        date, default_title = split_name(group)
         width, height = dimensions(thumb)
 
         photos.append(
@@ -171,6 +204,9 @@ def main() -> None:
                 "title": previous.get("title") or default_title,
                 "date": previous.get("date", date),
                 "caption": previous.get("caption", ""),
+                "group": slugify(default_title),
+                "integration": integration,
+                "variant": variant,
                 "width": width,
                 "height": height,
             }
