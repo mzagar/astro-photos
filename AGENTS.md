@@ -6,6 +6,20 @@ Operating instructions for whoever maintains this gallery (agent or human).
 ## Ground rules
 
 - **Visitor-facing copy is English**, including photo titles and captions.
+- **Originals arrive as Telegram documents, never as photos.** A Telegram photo
+  message is downscaled (long side 1280 or 1600) and re-encoded at roughly JPEG
+  q72, which throws away most of the pixels: a 2160×3840 export arrives as
+  720×1280 or 1440×2560. Documents keep the original bytes, EXIF included.
+- **If an attachment arrives as a photo, stop and ask.** Check before using it:
+
+  ```bash
+  grep '"message_id":NNN' ~/.local/state/herdr/plugins/permgps.telegram-agents/daemon.log \
+    | grep -o '"attachment":"[a-z]*"'
+  ```
+
+  `"photo"` means compressed; ask whether it was intentional before publishing.
+  `"document"` is the normal path. Files named `*-photo.jpg` in the inbox are the
+  compressed ones; documents keep their original name such as `IMG_1334.JPG`.
 - **Only watermarked, AI-enhanced exports are published.** They come from the
   Seestar app's share/export; the watermark (owner, location, time, object,
   integration) is part of the picture and is never cropped away.
