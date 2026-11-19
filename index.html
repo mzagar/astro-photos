@@ -329,10 +329,14 @@
       color: var(--fg);
     }
 
-    .info-dot {
+    .info {
       position: absolute;
       top: 8px;
       left: 8px;
+      z-index: 2;
+    }
+
+    .info-dot {
       display: grid;
       place-items: center;
       width: 20px;
@@ -341,7 +345,60 @@
       background: rgba(8, 10, 15, 0.72);
       color: #dbe3f0;
       font: 600 0.72rem/1 Georgia, "Times New Roman", serif;
+      cursor: help;
       backdrop-filter: blur(4px);
+    }
+
+    .info-tip {
+      position: absolute;
+      top: calc(100% + 8px);
+      left: -8px;
+      display: block;
+      width: 210px;
+      padding: 10px 12px 9px;
+      border: 1px solid rgba(255, 255, 255, 0.11);
+      border-radius: 8px;
+      background: rgba(10, 13, 19, 0.97);
+      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.5);
+      color: var(--fg);
+      font-size: 0.74rem;
+      line-height: 1.45;
+      text-align: left;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-4px);
+      transition: opacity 0.15s ease, transform 0.15s ease, visibility 0.15s;
+      pointer-events: none;
+    }
+
+    .info:hover .info-tip {
+      opacity: 1;
+      visibility: visible;
+      transform: none;
+      pointer-events: auto;
+    }
+
+    .info-tip-title {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 600;
+      font-size: 0.76rem;
+    }
+
+    .info-tip-fact {
+      display: flex;
+      gap: 5px;
+      align-items: baseline;
+      color: #c2cbdb;
+    }
+
+    .info-tip-fact .k { color: var(--muted); }
+
+    .info-tip-more {
+      display: block;
+      margin-top: 6px;
+      color: var(--accent);
+      font-size: 0.7rem;
     }
 
     .about {
@@ -491,6 +548,10 @@
       font-size: 0.78rem;
       font-variant-numeric: tabular-nums;
       text-align: center;
+    }
+
+    @media (hover: none) {
+      .info { display: none; }
     }
 
     @media (max-width: 640px) {
@@ -711,10 +772,21 @@
         if (group.variants.length > 1) {
           frame.append(el('span', 'badge', group.variants.length + ' versions'));
         }
-        if (objects[group.key]) {
-          var dot = el('span', 'info-dot', 'i');
-          dot.setAttribute('aria-hidden', 'true');
-          frame.append(dot);
+        var info = objects[group.key];
+        if (info) {
+          var badge = el('span', 'info');
+          badge.setAttribute('aria-hidden', 'true');
+          badge.append(el('span', 'info-dot', 'i'));
+          var tip = el('span', 'info-tip');
+          tip.append(el('span', 'info-tip-title', info.title || cover.title || ''));
+          (info.facts || []).slice(0, 3).forEach(function (pair) {
+            var line = el('span', 'info-tip-fact');
+            line.append(el('span', 'k', pair[0]), el('span', 'v', pair[1]));
+            tip.append(line);
+          });
+          tip.append(el('span', 'info-tip-more', 'Open for details'));
+          badge.append(tip);
+          frame.append(badge);
         }
 
         var caption = el('span', 'cap');

@@ -153,6 +153,14 @@ function aboutBox(lbCaption) { return lbCaption.children.find((c) => (c.classNam
 function framePart(card, cls) {
   return card.children[0].children.find((n) => (n.className || '') === cls) || null;
 }
+function findClass(node, cls) {
+  if ((node.className || '').split(/\s+/).includes(cls)) return node;
+  for (const child of node.children) {
+    const hit = findClass(child, cls);
+    if (hit) return hit;
+  }
+  return null;
+}
 function captionText(lbCaption) { return lbCaption.children.map((c) => c.textContent).join(' | '); }
 
 /* ---------------- static markup ---------------- */
@@ -279,7 +287,26 @@ check('caption carries title, date, text and hint',
   captionText(real.lbCaption).includes(covers[0].date) &&
   captionText(real.lbCaption).includes('full size and zoom'), captionText(real.lbCaption));
 check('tiles with a description carry the info dot',
-  realCards.every((c, i) => Boolean(framePart(c, 'info-dot')) === Boolean(objects[groupList[i][0].group])));
+  realCards.every((c, i) => Boolean(findClass(c, 'info-dot')) === Boolean(objects[groupList[i][0].group])));
+
+const tipCard = realCards.find((c, i) => objects[groupList[i][0].group]);
+const tipInfo = objects[groupList[realCards.indexOf(tipCard)][0].group];
+const tip = findClass(tipCard, 'info-tip');
+check('the dot carries a hover tooltip', tip !== null);
+if (tip) {
+  const tipTitle = findClass(tip, 'info-tip-title');
+  const tipFacts = tip.children.filter((n) => (n.className || '') === 'info-tip-fact');
+  const tipMore = findClass(tip, 'info-tip-more');
+  check('tooltip names the object', tipTitle && tipTitle.textContent === tipInfo.title, tipTitle && tipTitle.textContent);
+  check('tooltip shows at most three facts', tipFacts.length === Math.min(3, tipInfo.facts.length), tipFacts.length);
+  check('tooltip facts carry label and value',
+    tipFacts.every((row, i) => row.children[0].textContent === tipInfo.facts[i][0] &&
+      row.children[1].textContent === tipInfo.facts[i][1]));
+  check('tooltip invites the lightbox', tipMore && /details/i.test(tipMore.textContent));
+}
+check('hover styles exist for the tooltip', /\.info:hover \.info-tip/.test(css));
+check('touch devices hide the dot', /@media \(hover: none\) \{\s*\.info \{ display: none; \}/.test(css));
+check('the dot uses a help cursor, not the zoom cursor', /\.info-dot \{[^}]*cursor: help/.test(css));
 
 const aboutIdx = groupList.findIndex((v) => objects[v[0].group]);
 real.document.dispatch('keydown', { key: 'Escape' });

@@ -127,6 +127,10 @@ query when grepping the HTML.
   `Esc`. `Esc` closes zoom first, then the lightbox.
 - The `About` block is built from `window.OBJECTS[group]` and appended to the
   lightbox caption; a missing entry simply renders nothing.
+- Tiles with an entry show a small `i` badge that reveals a hover tooltip
+  (title, up to three facts, "Open for details"). It is CSS-only, `aria-hidden`,
+  and hidden entirely under `@media (hover: none)` so touch screens stay clean;
+  the full text always lives in the lightbox.
 - `scripts/check_site.js` mounts the real inline script against a hand-written DOM
   shim and asserts ~70 behaviours, including data-driven ordering. It needs no
   browser and no dependencies; run it before every publish.
