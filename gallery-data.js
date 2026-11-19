@@ -45,6 +45,19 @@ window.GALLERY_DATA = {
       "height": 640
     },
     {
+      "file": "photos/2026-11-14-m45-plejade-9m-boosted.jpg",
+      "thumb": "photos/thumbs/2026-11-14-m45-plejade-9m-boosted.jpg",
+      "title": "M45, Pleiades",
+      "date": "2026-11-14",
+      "time": "22:17",
+      "caption": "9 min of integration, the same stack with the colours pushed harder · captured 14 Nov 2026, 22:17.",
+      "group": "m45-plejade",
+      "integration": 9.0,
+      "variant": "boosted",
+      "width": 640,
+      "height": 640
+    },
+    {
       "file": "photos/2026-11-14-m45-plejade-9m.jpg",
       "thumb": "photos/thumbs/2026-11-14-m45-plejade-9m.jpg",
       "title": "M45, Pleiades",
