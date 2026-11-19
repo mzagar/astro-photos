@@ -23,6 +23,7 @@ the lightbox.
 ```
 index.html                 the site — layout, lightbox, zoom
 gallery-data.js            generated index: titles, dates, captions
+objects.js                 hand-written notes about each object, shown in the lightbox
 photos/                    web-sized images, photos/thumbs/ for the grid
 scripts/build_gallery.py   resize and regenerate the data file (macOS `sips`)
 scripts/check_site.js      smoke-test for the page logic, no browser needed

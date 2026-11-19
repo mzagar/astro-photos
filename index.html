@@ -329,6 +329,71 @@
       color: var(--fg);
     }
 
+    .info-dot {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      display: grid;
+      place-items: center;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: rgba(8, 10, 15, 0.72);
+      color: #dbe3f0;
+      font: 600 0.72rem/1 Georgia, "Times New Roman", serif;
+      backdrop-filter: blur(4px);
+    }
+
+    .about {
+      max-width: 62ch;
+      margin: 18px auto 0;
+      padding-top: 14px;
+      border-top: 1px solid rgba(255, 255, 255, 0.09);
+      text-align: left;
+    }
+
+    .about-title {
+      margin: 0 0 6px;
+      color: var(--fg);
+      font-size: 0.84rem;
+      font-weight: 600;
+    }
+
+    .about-text {
+      margin: 0 0 12px;
+      color: #c2cbdb;
+      font-size: 0.84rem;
+      line-height: 1.6;
+    }
+
+    .about-facts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 20px;
+      margin: 0 0 12px;
+      padding: 0;
+    }
+
+    .about-fact {
+      display: flex;
+      gap: 6px;
+      align-items: baseline;
+      font-size: 0.78rem;
+    }
+
+    .about-fact dt { margin: 0; color: var(--muted); }
+    .about-fact dd { margin: 0; color: var(--fg); }
+
+    .about-link {
+      display: inline-block;
+      color: var(--accent);
+      font-size: 0.8rem;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(127, 176, 255, 0.35);
+    }
+
+    .about-link:hover { border-bottom-color: var(--accent); }
+
     .lb-hint {
       margin: 12px 0 0;
       color: var(--muted);
@@ -505,6 +570,7 @@
     <img id="zoom-img" alt="">
   </div>
 
+  <script src="objects.js"></script>
   <script src="gallery-data.js"></script>
   <script>
     (function () {
@@ -513,6 +579,7 @@
       var data = window.GALLERY_DATA || {};
       var site = data.site || {};
       var photos = Array.isArray(data.photos) ? data.photos : [];
+      var objects = window.OBJECTS || {};
 
       var grid = document.getElementById('grid');
       var cards = [];
@@ -644,6 +711,11 @@
         if (group.variants.length > 1) {
           frame.append(el('span', 'badge', group.variants.length + ' versions'));
         }
+        if (objects[group.key]) {
+          var dot = el('span', 'info-dot', 'i');
+          dot.setAttribute('aria-hidden', 'true');
+          frame.append(dot);
+        }
 
         var caption = el('span', 'cap');
         caption.append(
@@ -714,6 +786,30 @@
             chips.append(chip);
           });
           lbCaption.append(chips);
+        }
+
+        var info = objects[group.key];
+        if (info) {
+          var about = el('div', 'about');
+          about.append(el('h3', 'about-title', 'About ' + (info.title || photo.title || '')));
+          if (info.about) about.append(el('p', 'about-text', info.about));
+          if (Array.isArray(info.facts) && info.facts.length) {
+            var facts = el('dl', 'about-facts');
+            info.facts.forEach(function (pair) {
+              var row = el('div', 'about-fact');
+              row.append(el('dt', '', pair[0]), el('dd', '', pair[1]));
+              facts.append(row);
+            });
+            about.append(facts);
+          }
+          if (info.wiki) {
+            var wiki = el('a', 'about-link', 'Wikipedia ↗');
+            wiki.href = info.wiki;
+            wiki.target = '_blank';
+            wiki.rel = 'noopener';
+            about.append(wiki);
+          }
+          lbCaption.append(about);
         }
 
         var hintText = 'Click the image for full size and zoom';

@@ -132,6 +132,7 @@ function harness(dataSource) {
 
   const sandbox = { window: { innerWidth: 1200, innerHeight: 800, addEventListener() {} }, document, console };
   vm.createContext(sandbox);
+  vm.runInContext(fs.readFileSync(path + '/objects.js', 'utf8'), sandbox);
   if (dataSource === 'real') vm.runInContext(fs.readFileSync(path + '/gallery-data.js', 'utf8'), sandbox);
   else sandbox.window.GALLERY_DATA = dataSource;
   vm.runInContext(script, sandbox);
@@ -148,6 +149,10 @@ function section(name) { console.log('\n' + name); }
 
 function cardsOf(strip) { return strip.children.filter((c) => (c.className || '').includes('card')); }
 function variantsBox(lbCaption) { return lbCaption.children.find((c) => (c.className || '') === 'variants') || null; }
+function aboutBox(lbCaption) { return lbCaption.children.find((c) => (c.className || '') === 'about') || null; }
+function framePart(card, cls) {
+  return card.children[0].children.find((n) => (n.className || '') === cls) || null;
+}
 function captionText(lbCaption) { return lbCaption.children.map((c) => c.textContent).join(' | '); }
 
 /* ---------------- static markup ---------------- */
@@ -168,8 +173,11 @@ check('no Croatian UI text left in gallery-data.js',
 check('landing mentions the scope', /Seestar S50 Pro/.test(html));
 check('no mount claims (alt-az removed)', !/alt-az/i.test(html) && !/equatorial|polar align/i.test(html));
 check('landing links a light pollution map', /lightpollutionmap\.info/.test(html));
+const objectsSource = fs.readFileSync(path + '/objects.js', 'utf8');
 check('no em dashes in the visible copy',
-  !/—/.test(html) && !/—/.test(fs.readFileSync(path + '/gallery-data.js', 'utf8')));
+  !/—/.test(html) && !/—/.test(fs.readFileSync(path + '/gallery-data.js', 'utf8')) &&
+  !/—/.test(objectsSource));
+check('object notes are English too', !CROATIAN.some((w) => objectsSource.includes(w)));
 check('gallery hint text removed', !html.includes('Scroll or drag') && !/id="gallery-hint"/.test(html));
 
 const css = html.slice(html.indexOf('<style>'), html.indexOf('</style>'));
@@ -217,7 +225,7 @@ check('cards show title and date', realCards.every((c, i) => {
   return cap.children[0].textContent === covers[i].title && cap.children[1].textContent.includes(covers[i].date);
 }));
 check('only multi-version cards carry a badge', realCards.every((c, i) => {
-  const badge = c.children[0].children[1];
+  const badge = framePart(c, 'badge');
   return groupList[i].length > 1 ? Boolean(badge && /versions$/.test(badge.textContent)) : !badge;
 }));
 check('cover is the longest integration', groupList.every((v) => v.length < 2 ||
@@ -246,6 +254,18 @@ check('copyright year is filled in at runtime',
   real.tree['#copyright-year'].textContent);
 check('document title follows the data file', real.document.title === data.site.title);
 
+const objects = real.sandbox.window.OBJECTS;
+const groupKeys = Array.from(new Set(data.photos.map((p) => p.group)));
+check('every object has a description', groupKeys.every((k) => objects[k]),
+  groupKeys.filter((k) => !objects[k]).join(','));
+check('no descriptions without an object', Object.keys(objects).every((k) => groupKeys.includes(k)),
+  Object.keys(objects).filter((k) => !groupKeys.includes(k)).join(','));
+check('every description has a wikipedia link',
+  Object.values(objects).every((o) => /^https:\/\/en\.wikipedia\.org\/wiki\/[A-Za-z0-9_()',.-]+$/.test(o.wiki)));
+check('every description has facts', Object.values(objects).every((o) => Array.isArray(o.facts) && o.facts.length >= 3));
+check('descriptions stay short', Object.values(objects).every((o) => o.about.split(/\s+/).length <= 60),
+  Object.entries(objects).filter(([, o]) => o.about.split(/\s+/).length > 60).map(([k]) => k).join(','));
+
 const missing = data.photos.flatMap((p) => [p.file, p.thumb]).filter((f) => !fs.existsSync(path + '/' + f));
 check('all referenced image files exist on disk', missing.length === 0, missing.join(', '));
 
@@ -258,6 +278,33 @@ check('caption carries title, date, text and hint',
   captionText(real.lbCaption).includes(covers[0].title) &&
   captionText(real.lbCaption).includes(covers[0].date) &&
   captionText(real.lbCaption).includes('full size and zoom'), captionText(real.lbCaption));
+check('tiles with a description carry the info dot',
+  realCards.every((c, i) => Boolean(framePart(c, 'info-dot')) === Boolean(objects[groupList[i][0].group])));
+
+const aboutIdx = groupList.findIndex((v) => objects[v[0].group]);
+real.document.dispatch('keydown', { key: 'Escape' });
+realCards[aboutIdx].dispatch('click', {});
+const about = aboutBox(real.lbCaption);
+check('the lightbox shows an About block', about !== null);
+if (about) {
+  const parts = about.children;
+  const title = parts.find((n) => (n.className || '') === 'about-title');
+  const text = parts.find((n) => (n.className || '') === 'about-text');
+  const facts = parts.find((n) => (n.className || '') === 'about-facts');
+  const link = parts.find((n) => (n.className || '') === 'about-link');
+  const info = objects[groupList[aboutIdx][0].group];
+  check('About block names the object', title && title.textContent.includes(info.title), title && title.textContent);
+  check('About block carries the text', text && text.textContent === info.about);
+  check('About block lists the facts', facts && facts.children.length === info.facts.length,
+    facts && facts.children.length);
+  check('facts render as label and value',
+    facts && facts.children.every((row, i) => row.children[0].textContent === info.facts[i][0] &&
+      row.children[1].textContent === info.facts[i][1]),
+    facts && JSON.stringify(facts.children.map((r) => r.children.map((n) => n.textContent))));
+  check('About block links to wikipedia', link && link.href === info.wiki &&
+    link.target === '_blank' && link.rel === 'noopener', link && link.href);
+}
+
 const singleIndex = groupList.findIndex((v) => v.length === 1);
 real.document.dispatch('keydown', { key: 'Escape' });
 realCards[singleIndex].dispatch('click', {});
@@ -327,9 +374,10 @@ const synMulti = synCards[0];
 const synSingle = synCards[1];
 check('cover is the longest integration', synMulti.children[0].children[0].src === 'photos/thumbs/a-97m.jpg',
   synMulti.children[0].children[0].src);
-check('multi-version card shows a badge', synMulti.children[0].children[1].textContent === '2 versions',
-  synMulti.children[0].children[1] && synMulti.children[0].children[1].textContent);
-check('single-version card has no badge', !synSingle.children[0].children[1]);
+check('multi-version card shows a badge', framePart(synMulti, 'badge').textContent === '2 versions',
+  framePart(synMulti, 'badge') && framePart(synMulti, 'badge').textContent);
+check('single-version card has no badge', !framePart(synSingle, 'badge'));
+check('no About block when the object has no description', aboutBox(syn.lbCaption) === null);
 check('card meta shows the cover integration', synMulti.children[1].children[1].textContent === '1 h 37 min · 2026-11-20',
   synMulti.children[1].children[1].textContent);
 
