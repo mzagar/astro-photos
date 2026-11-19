@@ -385,6 +385,22 @@ window.GALLERY_DATA = {
       "height": 640
     },
     {
+      "file": "photos/2026-11-19-ic405-plamtecica-53m-portrait.jpg",
+      "view": "photos/view/2026-11-19-ic405-plamtecica-53m-portrait.jpg",
+      "thumb": "photos/thumbs/2026-11-19-ic405-plamtecica-53m-portrait.jpg",
+      "title": "IC 405, Flaming Star Nebula",
+      "title_hr": "IC 405, maglica Plamteća zvijezda",
+      "date": "2026-11-19",
+      "time": "00:29",
+      "caption": "53 min of integration · portrait framing, a wider field than the square export · captured 19 Nov 2026, 00:29.",
+      "caption_hr": "53 min integracije · uspravni kadar, šire polje od kvadratnog izvoza · snimljeno 19. 11. 2026. u 00:29.",
+      "group": "ic405-plamtecica",
+      "integration": 53.0,
+      "variant": "portrait",
+      "width": 360,
+      "height": 640
+    },
+    {
       "file": "photos/2026-11-19-ic405-plamtecica-53m.jpg",
       "view": "photos/view/2026-11-19-ic405-plamtecica-53m.jpg",
       "thumb": "photos/thumbs/2026-11-19-ic405-plamtecica-53m.jpg",
