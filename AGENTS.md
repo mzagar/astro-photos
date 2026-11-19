@@ -117,6 +117,11 @@ them after a rename.
 
 ## Grouping and ordering
 
+- **Extra exports become extra variants, never replacements.** Beyond the usual
+  enhanced/stacked pair the author often experiments with settings and sends more
+  renderings of the same object. Add each as its own variant with a descriptive
+  label (`-7m`, `-21m`, `-portrait`, `-wide`, `-boosted`), keep every existing
+  one, and give each a caption saying what is different.
 - One tile per `group`, regardless of capture date.
 - Variants are sorted by integration descending, then an unlabelled version first,
   then by label (numeric-aware, so `2x` precedes `10x`). The first variant is the

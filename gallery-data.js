@@ -113,6 +113,22 @@ window.GALLERY_DATA = {
       "height": 640
     },
     {
+      "file": "photos/2026-11-16-m33-triangulum-21m.jpg",
+      "view": "photos/view/2026-11-16-m33-triangulum-21m.jpg",
+      "thumb": "photos/thumbs/2026-11-16-m33-triangulum-21m.jpg",
+      "title": "M33, Triangulum Galaxy",
+      "title_hr": "M33, galaksija Trokut",
+      "date": "2026-11-16",
+      "time": "18:29",
+      "caption": "21 min of integration · captured 16 Nov 2026, 18:29.",
+      "caption_hr": "21 min integracije · snimljeno 16. 11. 2026. u 18:29.",
+      "group": "m33-triangulum",
+      "integration": 21.0,
+      "variant": "",
+      "width": 640,
+      "height": 640
+    },
+    {
       "file": "photos/2026-11-16-m33-triangulum-45m-boosted.jpg",
       "view": "photos/view/2026-11-16-m33-triangulum-45m-boosted.jpg",
       "thumb": "photos/thumbs/2026-11-16-m33-triangulum-45m-boosted.jpg",
@@ -126,6 +142,22 @@ window.GALLERY_DATA = {
       "integration": 45.0,
       "variant": "boosted",
       "width": 640,
+      "height": 640
+    },
+    {
+      "file": "photos/2026-11-16-m33-triangulum-45m-wide.jpg",
+      "view": "photos/view/2026-11-16-m33-triangulum-45m-wide.jpg",
+      "thumb": "photos/thumbs/2026-11-16-m33-triangulum-45m-wide.jpg",
+      "title": "M33, Triangulum Galaxy",
+      "title_hr": "M33, galaksija Trokut",
+      "date": "2026-11-16",
+      "time": "19:07",
+      "caption": "45 min of integration · portrait framing, with satellite trails across the field · captured 16 Nov 2026, 19:07.",
+      "caption_hr": "45 min integracije · uspravni kadar, s tragovima satelita preko polja · snimljeno 16. 11. 2026. u 19:07.",
+      "group": "m33-triangulum",
+      "integration": 45.0,
+      "variant": "wide",
+      "width": 360,
       "height": 640
     },
     {
@@ -145,6 +177,22 @@ window.GALLERY_DATA = {
       "height": 640
     },
     {
+      "file": "photos/2026-11-16-m33-triangulum-7m.jpg",
+      "view": "photos/view/2026-11-16-m33-triangulum-7m.jpg",
+      "thumb": "photos/thumbs/2026-11-16-m33-triangulum-7m.jpg",
+      "title": "M33, Triangulum Galaxy",
+      "title_hr": "M33, galaksija Trokut",
+      "date": "2026-11-16",
+      "time": "18:08",
+      "caption": "7 min of integration, an early stack that evening · captured 16 Nov 2026, 18:08.",
+      "caption_hr": "7 min integracije, ranije slaganje te večeri · snimljeno 16. 11. 2026. u 18:08.",
+      "group": "m33-triangulum",
+      "integration": 7.0,
+      "variant": "",
+      "width": 640,
+      "height": 640
+    },
+    {
       "file": "photos/2026-11-18-m27-dumbbell-7m-crop.jpg",
       "view": "photos/view/2026-11-18-m27-dumbbell-7m-crop.jpg",
       "thumb": "photos/thumbs/2026-11-18-m27-dumbbell-7m-crop.jpg",
@@ -158,6 +206,22 @@ window.GALLERY_DATA = {
       "integration": 7.0,
       "variant": "crop",
       "width": 640,
+      "height": 640
+    },
+    {
+      "file": "photos/2026-11-18-m27-dumbbell-7m-portrait.jpg",
+      "view": "photos/view/2026-11-18-m27-dumbbell-7m-portrait.jpg",
+      "thumb": "photos/thumbs/2026-11-18-m27-dumbbell-7m-portrait.jpg",
+      "title": "M27, Dumbbell Nebula",
+      "title_hr": "M27, maglica Bučica",
+      "date": "2026-11-18",
+      "time": "",
+      "caption": "7 min of integration · portrait framing, the widest field of the three · captured 18 Nov 2026.",
+      "caption_hr": "7 min integracije · uspravni kadar, najšire polje od tri verzije · snimljeno 18. 11. 2026.",
+      "group": "m27-dumbbell",
+      "integration": 7.0,
+      "variant": "portrait",
+      "width": 360,
       "height": 640
     },
     {
