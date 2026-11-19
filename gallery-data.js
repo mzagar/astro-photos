@@ -32,6 +32,19 @@ window.GALLERY_DATA = {
       "height": 640
     },
     {
+      "file": "photos/2026-11-14-m31-andromeda-36m-boosted.jpg",
+      "thumb": "photos/thumbs/2026-11-14-m31-andromeda-36m-boosted.jpg",
+      "title": "M31, Andromeda Galaxy",
+      "date": "2026-11-14",
+      "time": "21:01",
+      "caption": "36 min of integration, the same stack with the colours pushed harder · M110 is the small companion above the core · captured 14 Nov 2026, 21:01.",
+      "group": "m31-andromeda",
+      "integration": 36.0,
+      "variant": "boosted",
+      "width": 640,
+      "height": 640
+    },
+    {
       "file": "photos/2026-11-14-m31-andromeda-36m.jpg",
       "thumb": "photos/thumbs/2026-11-14-m31-andromeda-36m.jpg",
       "title": "M31, Andromeda Galaxy",
