@@ -14,6 +14,9 @@ Donja Stubica, Croatia with a ZWO Seestar S50 Pro.
   no build step, no external dependencies. It renders the tile grid, the lightbox
   and the fullscreen pan-and-zoom viewer.
 
+The site speaks English and Croatian. The browser language picks the first one;
+the `EN` / `HR` switch in the header sticks in `localStorage`.
+
 Photographs of the same object are grouped into a single tile. The longest total
 integration becomes the cover; the other versions are offered as buttons inside
 the lightbox.
@@ -22,8 +25,9 @@ the lightbox.
 
 ```
 index.html                 the site — layout, lightbox, zoom
-gallery-data.js            generated index: titles, dates, captions
-objects.js                 hand-written notes about each object, shown in the lightbox
+gallery-data.js            generated index: titles, dates, captions (EN + HR)
+objects.js                 hand-written notes about each object, EN + HR
+i18n.js                    interface strings and language detection
 photos/                    web-sized images, photos/thumbs/ for the grid
 scripts/build_gallery.py   resize and regenerate the data file (macOS `sips`)
 scripts/check_site.js      smoke-test for the page logic, no browser needed

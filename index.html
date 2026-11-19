@@ -57,6 +57,32 @@
       font-size: clamp(0.92rem, 2vw, 1rem);
     }
 
+    .lang {
+      display: flex;
+      gap: 2px;
+      justify-content: flex-end;
+      margin-bottom: 18px;
+    }
+
+    .lang button {
+      padding: 4px 9px;
+      border: 1px solid transparent;
+      border-radius: 6px;
+      background: none;
+      color: var(--muted);
+      font: inherit;
+      font-size: 0.74rem;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+    }
+
+    .lang button:hover { color: var(--fg); }
+
+    .lang button[aria-pressed="true"] {
+      border-color: rgba(127, 176, 255, 0.45);
+      color: var(--fg);
+    }
+
     .hero p.intro {
       margin: 0 0 14px;
       color: var(--body);
@@ -567,16 +593,21 @@
 <body>
   <div class="wrap">
     <header class="hero">
-      <h1 id="site-title">Backyard Deep Sky</h1>
-      <p class="sub" id="site-subtitle">Astro photos with a ZWO Seestar S50 Pro</p>
+      <div class="lang" role="group" aria-label="Language" data-i18n-aria="lang">
+        <button type="button" data-lang="en">EN</button>
+        <button type="button" data-lang="hr">HR</button>
+      </div>
 
-      <p class="intro">
+      <h1 id="site-title" data-i18n="title">Backyard Deep Sky</h1>
+      <p class="sub" id="site-subtitle" data-i18n="subtitle">Astro photos with a ZWO Seestar S50 Pro</p>
+
+      <p class="intro" data-i18n="intro1">
         I photograph deep sky objects from my backyard in Donja Stubica, Croatia, a small
         town in the Zagorje hills, about 30 km north of Zagreb. The telescope is a smart
         scope that fits in a backpack: I put it on the ground, pick a target in the phone
         app, and it finds and tracks the object on its own.
       </p>
-      <p class="intro">
+      <p class="intro" data-i18n="intro2">
         Each picture is a stack of many short exposures, stretched and denoised in the
         Seestar app, the watermark in the corner is added by the app itself, so the
         object, time and integration travel with the file.
@@ -585,52 +616,53 @@
       <p class="setup">
         <span>ZWO Seestar S50 Pro</span>
         <span class="sep">·</span>
-        <span>Donja Stubica, Croatia</span>
+        <span data-i18n="place">Donja Stubica, Croatia</span>
         <span class="sep">·</span>
         <a href="https://www.lightpollutionmap.info/#zoom=13.00&amp;lat=45.9806&amp;lon=15.9711&amp;layers=B0TFFFFFFFFFFFFFFFFFFFFFFF"
-           target="_blank" rel="noopener">light pollution map ↗</a>
+           target="_blank" rel="noopener" data-i18n="map">light pollution map ↗</a>
       </p>
     </header>
 
     <section class="gallery" aria-labelledby="gallery-heading">
       <div class="gallery-head">
-        <h2 id="gallery-heading">Gallery</h2>
+        <h2 id="gallery-heading" data-i18n="galleryHeading">Gallery</h2>
       </div>
 
-      <div class="grid" id="grid" role="group" aria-label="Photos"></div>
+      <div class="grid" id="grid" role="group" aria-label="Photos" data-i18n-aria="photos"></div>
     </section>
 
     <footer>
-      <p id="site-footer"></p>
+      <p id="site-footer" data-i18n="footer"></p>
       <p class="copyright">
         © <span id="copyright-year">2026</span> Mario Žagar
       </p>
     </footer>
   </div>
 
-  <div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true" aria-label="Photo viewer">
-    <button class="lb-close" type="button" aria-label="Close">×</button>
-    <button class="lb-prev" type="button" aria-label="Previous object">‹</button>
-    <button class="lb-next" type="button" aria-label="Next object">›</button>
+  <div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true" aria-label="Photo viewer" data-i18n-aria="viewer">
+    <button class="lb-close" type="button" aria-label="Close" data-i18n-aria="close">×</button>
+    <button class="lb-prev" type="button" aria-label="Previous photo" data-i18n-aria="prev">‹</button>
+    <button class="lb-next" type="button" aria-label="Next photo" data-i18n-aria="next">›</button>
     <figure>
-      <button class="lb-media" type="button" aria-label="Open full size and zoom">
+      <button class="lb-media" type="button" aria-label="Open full size and zoom" data-i18n-aria="media">
         <img id="lb-img" alt="">
       </button>
       <figcaption id="lb-caption"></figcaption>
     </figure>
   </div>
 
-  <div class="zoom" id="zoom" hidden role="dialog" aria-modal="true" aria-label="Full size photo">
+  <div class="zoom" id="zoom" hidden role="dialog" aria-modal="true" aria-label="Full size photo" data-i18n-aria="fullPhoto">
     <div class="zoom-bar">
-      <button type="button" id="zoom-out" aria-label="Zoom out">−</button>
+      <button type="button" id="zoom-out" aria-label="Zoom out" data-i18n-aria="zoomOut">−</button>
       <span class="zoom-label" id="zoom-label">100 %</span>
-      <button type="button" id="zoom-in" aria-label="Zoom in">+</button>
-      <button type="button" id="zoom-reset" aria-label="Reset zoom">1:1</button>
-      <button type="button" id="zoom-close" aria-label="Close full size photo">×</button>
+      <button type="button" id="zoom-in" aria-label="Zoom in" data-i18n-aria="zoomIn">+</button>
+      <button type="button" id="zoom-reset" aria-label="Reset zoom" data-i18n-aria="zoomReset">1:1</button>
+      <button type="button" id="zoom-close" aria-label="Close full size photo" data-i18n-aria="zoomClose">×</button>
     </div>
     <img id="zoom-img" alt="">
   </div>
 
+  <script src="i18n.js"></script>
   <script src="objects.js"></script>
   <script src="gallery-data.js"></script>
   <script>
@@ -638,9 +670,44 @@
       'use strict';
 
       var data = window.GALLERY_DATA || {};
-      var site = data.site || {};
       var photos = Array.isArray(data.photos) ? data.photos : [];
       var objects = window.OBJECTS || {};
+      var i18n = window.I18N || { strings: {}, aria: {}, languages: [], detect: [] };
+      var lang = 'en';
+
+      function strings() {
+        return i18n.strings[lang] || i18n.strings[i18n.defaultLanguage] || {};
+      }
+
+      function t(key) {
+        var value = strings()[key];
+        return value == null ? '' : value;
+      }
+
+      function aria(key) {
+        var table = i18n.aria[lang] || {};
+        return table[key] || key;
+      }
+
+      function photoTitle(photo) {
+        return (lang !== 'en' && photo['title_' + lang]) || photo.title || '';
+      }
+
+      function photoCaption(photo) {
+        return (lang !== 'en' && photo['caption_' + lang]) || photo.caption || '';
+      }
+
+      function objectInfo(key) {
+        var base = objects[key];
+        if (!base) return null;
+        if (lang === 'en') return base;
+        return {
+          title: base['title_' + lang] || base.title,
+          about: base['about_' + lang] || base.about,
+          facts: base['facts_' + lang] || base.facts,
+          wiki: base.wiki
+        };
+      }
 
       var grid = document.getElementById('grid');
       var cards = [];
@@ -660,15 +727,49 @@
       var groupIndex = -1;
       var variantIndex = 0;
 
-      function setText(id, value) {
-        if (!value) return;
-        document.getElementById(id).textContent = value;
+      function applyChrome() {
+        document.documentElement.lang = lang;
+        var table = strings();
+        document.title = table.title || '';
+        var nodes = document.querySelectorAll('[data-i18n]');
+        for (var i = 0; i < nodes.length; i += 1) {
+          var value = table[nodes[i].getAttribute('data-i18n')];
+          if (value != null) nodes[i].textContent = value;
+        }
+        var labelled = document.querySelectorAll('[data-i18n-aria]');
+        for (var j = 0; j < labelled.length; j += 1) {
+          labelled[j].setAttribute('aria-label', aria(labelled[j].getAttribute('data-i18n-aria')));
+        }
+        var buttons = document.querySelectorAll('.lang button');
+        for (var k = 0; k < buttons.length; k += 1) {
+          var active = buttons[k].getAttribute('data-lang') === lang;
+          buttons[k].setAttribute('aria-pressed', active ? 'true' : 'false');
+        }
       }
 
-      setText('site-title', site.title);
-      setText('site-subtitle', site.subtitle);
-      setText('site-footer', site.footer);
-      if (site.title) document.title = site.title;
+      function preferredLanguage() {
+        try {
+          var saved = window.localStorage.getItem('astro-lang');
+          if (saved && i18n.strings[saved]) return saved;
+        } catch (error) { /* storage blocked */ }
+        var nav = typeof navigator === 'undefined' ? null : navigator;
+        var list = (nav && (nav.languages || [nav.language])) || [];
+        for (var i = 0; i < list.length; i += 1) {
+          var code = String(list[i] || '').slice(0, 2).toLowerCase();
+          if ((i18n.detect || []).indexOf(code) !== -1) return code;
+        }
+        return i18n.defaultLanguage || 'en';
+      }
+
+      function setLanguage(next) {
+        if (!i18n.strings[next] || next === lang) return;
+        lang = next;
+        try { window.localStorage.setItem('astro-lang', next); } catch (error) { /* ignore */ }
+        applyChrome();
+        renderTiles();
+        if (!lightbox.hidden) render();
+      }
+
       document.getElementById('copyright-year').textContent = String(new Date().getFullYear());
 
       function el(tag, className, text) {
@@ -743,36 +844,42 @@
 
       var groups = buildGroups(photos);
 
-      if (!groups.length) {
-        grid.append(el('p', 'empty', 'No photos yet. Drop exports into masters/ and run scripts/build_gallery.py.'));
-        return;
-      }
-
       function metaLine(photo) {
         return [formatIntegration(photo.integration), photo.date]
           .filter(Boolean)
           .join(' · ');
       }
 
-      groups.forEach(function (group, index) {
+      function renderTiles() {
+        grid.textContent = '';
+        cards = [];
+        if (!groups.length) {
+          grid.append(el('p', 'empty', t('empty')));
+          return;
+        }
+        groups.forEach(buildTile);
+        layout();
+      }
+
+      function buildTile(group, index) {
         var cover = group.cover;
         var card = el('button', 'card');
         card.type = 'button';
-        card.setAttribute('aria-label', (cover.title || 'Photo') + ', open details');
+        card.setAttribute('aria-label', photoTitle(cover) + ', ' + aria('openDetails'));
 
         var frame = el('span', 'frame');
         var img = el('img');
         img.src = cover.thumb || cover.file;
-        img.alt = cover.title || '';
+        img.alt = photoTitle(cover);
         img.loading = 'lazy';
         img.decoding = 'async';
         if (cover.width) img.width = cover.width;
         if (cover.height) img.height = cover.height;
         frame.append(img);
         if (group.variants.length > 1) {
-          frame.append(el('span', 'badge', group.variants.length + ' versions'));
+          frame.append(el('span', 'badge', t('versions')(group.variants.length)));
         }
-        var info = objects[group.key];
+        var info = objectInfo(group.key);
         if (info) {
           var badge = el('span', 'info');
           badge.setAttribute('aria-hidden', 'true');
@@ -784,14 +891,14 @@
             line.append(el('span', 'k', pair[0]), el('span', 'v', pair[1]));
             tip.append(line);
           });
-          tip.append(el('span', 'info-tip-more', 'Open for details'));
+          tip.append(el('span', 'info-tip-more', t('more')));
           badge.append(tip);
           frame.append(badge);
         }
 
         var caption = el('span', 'cap');
         caption.append(
-          el('span', 'title', cover.title || ''),
+          el('span', 'title', photoTitle(cover)),
           el('span', 'meta', metaLine(cover))
         );
         card.append(frame, caption);
@@ -801,7 +908,7 @@
           node: card,
           ratio: (cover.width && cover.height) ? cover.height / cover.width : 1.25
         });
-      });
+      }
 
       /* ---------- masonry layout ---------- */
 
@@ -817,8 +924,6 @@
           item.node.style.gridRowEnd = 'span ' + Math.ceil((height + TILE_GAP) / ROW_UNIT);
         });
       }
-
-      layout();
 
       var resizeQueued = false;
       window.addEventListener('resize', function () {
@@ -836,16 +941,16 @@
         var photo = group.variants[variantIndex] || group.cover;
 
         lbImg.src = photo.file;
-        lbImg.alt = photo.title || '';
+        lbImg.alt = photoTitle(photo);
 
         lbCaption.textContent = '';
-        lbCaption.append(el('div', 'lb-title', photo.title || ''));
+        lbCaption.append(el('div', 'lb-title', photoTitle(photo)));
         lbCaption.append(el('div', 'lb-metadata', metaLine(photo)));
-        if (photo.caption) lbCaption.append(el('p', 'lb-text', photo.caption));
+        if (photoCaption(photo)) lbCaption.append(el('p', 'lb-text', photoCaption(photo)));
 
         if (group.variants.length > 1) {
           var chips = el('div', 'variants');
-          chips.append(el('span', 'label', 'Exposures'));
+          chips.append(el('span', 'label', t('exposures')));
           group.variants.forEach(function (variant, index) {
             var chipLabel = variantLabel(variant) || variant.date || 'version';
             var chip = el('button', '', chipLabel);
@@ -860,10 +965,11 @@
           lbCaption.append(chips);
         }
 
-        var info = objects[group.key];
+        var info = objectInfo(group.key);
         if (info) {
           var about = el('div', 'about');
-          about.append(el('h3', 'about-title', 'About ' + (info.title || photo.title || '')));
+          var aboutName = info.title || photoTitle(photo);
+          about.append(el('h3', 'about-title', t('aboutTitle').replace('{name}', aboutName)));
           if (info.about) about.append(el('p', 'about-text', info.about));
           if (Array.isArray(info.facts) && info.facts.length) {
             var facts = el('dl', 'about-facts');
@@ -875,7 +981,7 @@
             about.append(facts);
           }
           if (info.wiki) {
-            var wiki = el('a', 'about-link', 'Wikipedia ↗');
+            var wiki = el('a', 'about-link', t('wiki'));
             wiki.href = info.wiki;
             wiki.target = '_blank';
             wiki.rel = 'noopener';
@@ -884,8 +990,8 @@
           lbCaption.append(about);
         }
 
-        var hintText = 'Click the image for full size and zoom';
-        if (group.variants.length > 1) hintText += ' · switch version above';
+        var hintText = t('hintZoom');
+        if (group.variants.length > 1) hintText += ' · ' + t('hintSwitch');
         lbCaption.append(el('p', 'lb-hint', hintText));
 
         var single = groups.length < 2;
@@ -962,7 +1068,7 @@
         if (!group) return;
         var photo = group.variants[variantIndex] || group.cover;
         zoomImg.src = photo.file;
-        zoomImg.alt = photo.title || '';
+        zoomImg.alt = photoTitle(photo);
         zoomEl.hidden = false;
         document.body.classList.add('locked');
         resetZoom();
@@ -1076,6 +1182,19 @@
       document.getElementById('zoom-close').addEventListener('click', closeZoom);
 
       /* ---------- wiring ---------- */
+
+      var langButtons = document.querySelectorAll('.lang button');
+      for (var b = 0; b < langButtons.length; b += 1) {
+        (function (button) {
+          button.addEventListener('click', function () {
+            setLanguage(button.getAttribute('data-lang'));
+          });
+        })(langButtons[b]);
+      }
+
+      lang = preferredLanguage();
+      applyChrome();
+      renderTiles();
 
       lbMedia.addEventListener('click', openZoom);
       lightbox.addEventListener('click', function (event) {

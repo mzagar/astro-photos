@@ -54,16 +54,6 @@ VARIANT_RE = re.compile(
     r"|(?P<minutes>\d+(?:\.\d+)?)m)(?:-(?P<label>[a-z0-9]+(?:-[a-z0-9]+)*))?)$"
 )
 
-SITE = {
-    "title": "Backyard Deep Sky",
-    "subtitle": "Astro photos with a ZWO Seestar S50 Pro",
-    "footer": (
-        "Shot with a ZWO Seestar S50 Pro · stacked and processed in the Seestar app · "
-        "Donja Stubica, Croatia"
-    ),
-}
-
-
 def die(message: str) -> None:
     print(f"error: {message}", file=sys.stderr)
     raise SystemExit(1)
@@ -207,9 +197,11 @@ def main() -> None:
                 "file": rel_full,
                 "thumb": rel_thumb,
                 "title": previous.get("title") or default_title,
+                "title_hr": previous.get("title_hr", ""),
                 "date": previous.get("date", date),
                 "time": previous.get("time", ""),
                 "caption": previous.get("caption", ""),
+                "caption_hr": previous.get("caption_hr", ""),
                 "group": slugify(default_title),
                 "integration": integration,
                 "variant": variant,
@@ -229,7 +221,7 @@ def main() -> None:
         if path.relative_to(ROOT).as_posix() not in expected
     )
 
-    payload = {"site": SITE, "photos": photos}
+    payload = {"photos": photos}
     DATA_FILE.write_text(
         DATA_PREFIX + json.dumps(payload, indent=2, ensure_ascii=False) + ";\n",
         encoding="utf-8",

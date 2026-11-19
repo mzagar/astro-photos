@@ -35,8 +35,35 @@ function makeEl(tag) {
     getAttribute(n) { return n in node.attrs ? node.attrs[n] : null; },
     focus() {},
     querySelector(sel) {
-      const want = sel.replace(/^\./, '');
-      return node.children.find((c) => (c.className || '').split(/\s+/).includes(want)) || null;
+      const found = node.querySelectorAll(sel);
+      return found.length ? found[0] : null;
+    },
+    querySelectorAll(sel) {
+      const parts = sel.trim().split(/\s+/);
+      const matches = (n, part) => {
+        if (part.startsWith('.')) return (n.className || '').split(/\s+/).includes(part.slice(1));
+        if (part.startsWith('[')) {
+          const inner = part.slice(1, -1);
+          const split = inner.indexOf('=');
+          if (split === -1) return n.getAttribute(inner) != null;
+          const name = inner.slice(0, split);
+          const value = inner.slice(split + 1).replace(/^["']|["']$/g, '');
+          return n.getAttribute(name) === value;
+        }
+        return n.tagName === part.toUpperCase();
+      };
+      const walk = (current, level, found) => {
+        for (const child of current.children) {
+          if (matches(child, parts[level])) {
+            if (level === parts.length - 1) found.push(child);
+            else walk(child, level + 1, found);
+          } else {
+            walk(child, level, found);
+          }
+        }
+        return found;
+      };
+      return walk(node, 0, []);
     },
     closest(sel) {
       const want = sel.replace(/^\./, '');
@@ -75,7 +102,7 @@ function makeEl(tag) {
   return node;
 }
 
-function harness(dataSource) {
+function harness(dataSource, options = {}) {
   const body = makeEl('body');
   const tree = {};
   function mount(id, cls, tag = 'div', parent = body) {
@@ -89,11 +116,26 @@ function harness(dataSource) {
   }
 
   const hero = mount('', 'hero', 'header');
-  mount('site-title', '', 'h1', hero);
-  mount('site-subtitle', 'sub', 'p', hero);
-  mount('gallery-hint', 'hint', 'p');
+  const langBar = mount('', 'lang', 'div');
+  const enButton = mount('', '', 'button', langBar);
+  enButton.setAttribute('data-lang', 'en');
+  const hrButton = mount('', '', 'button', langBar);
+  hrButton.setAttribute('data-lang', 'hr');
+
+  const heading = mount('site-title', '', 'h1', hero);
+  heading.setAttribute('data-i18n', 'title');
+  const subtitle = mount('site-subtitle', 'sub', 'p', hero);
+  subtitle.setAttribute('data-i18n', 'subtitle');
+  const intro1 = mount('', 'intro', 'p', hero);
+  intro1.setAttribute('data-i18n', 'intro1');
+  const intro2 = mount('', 'intro', 'p', hero);
+  intro2.setAttribute('data-i18n', 'intro2');
+  const galleryHeading = mount('gallery-heading', '', 'h2');
+  galleryHeading.setAttribute('data-i18n', 'galleryHeading');
+
   const grid = mount('grid', 'grid', 'div');
-  mount('site-footer', '', 'p', mount('', '', 'footer'));
+  const footerEl = mount('site-footer', '', 'p', mount('', '', 'footer'));
+  footerEl.setAttribute('data-i18n', 'footer');
   mount('copyright-year', '', 'span');
 
   const lightbox = mount('lightbox', 'lightbox');
@@ -118,11 +160,13 @@ function harness(dataSource) {
 
   const document = {
     body,
+    documentElement: { lang: 'en' },
     title: '',
     activeElement: null,
     createElement: makeEl,
     getElementById: (id) => tree['#' + id],
-    querySelector: (sel) => tree[sel],
+    querySelector: (sel) => tree[sel] || body.querySelector(sel),
+    querySelectorAll: (sel) => body.querySelectorAll(sel),
     addEventListener(type, fn) { (document._l = document._l || {}); (document._l[type] = document._l[type] || []).push(fn); },
     dispatch(type, props) {
       const event = Object.assign({ type, target: document.body, preventDefault() {} }, props);
@@ -130,14 +174,33 @@ function harness(dataSource) {
     }
   };
 
-  const sandbox = { window: { innerWidth: 1200, innerHeight: 800, addEventListener() {} }, document, console };
+  const storage = Object.assign({}, options.stored || {});
+  const sandbox = {
+    window: {
+      innerWidth: 1200,
+      innerHeight: 800,
+      addEventListener() {},
+      localStorage: {
+        getItem: (k) => (k in storage ? storage[k] : null),
+        setItem: (k, v) => { storage[k] = String(v); }
+      }
+    },
+    document,
+    navigator: { languages: options.languages || ['en-GB', 'en'], language: (options.languages || ['en-GB'])[0] },
+    console
+  };
   vm.createContext(sandbox);
+  vm.runInContext(fs.readFileSync(path + '/i18n.js', 'utf8'), sandbox);
   vm.runInContext(fs.readFileSync(path + '/objects.js', 'utf8'), sandbox);
   if (dataSource === 'real') vm.runInContext(fs.readFileSync(path + '/gallery-data.js', 'utf8'), sandbox);
   else sandbox.window.GALLERY_DATA = dataSource;
   vm.runInContext(script, sandbox);
 
-  return { tree, document, body, sandbox, strip: tree['#grid'], lbCaption: tree['#lb-caption'] };
+  return {
+    tree, document, body, sandbox, storage,
+    strip: tree['#grid'], lbCaption: tree['#lb-caption'],
+    langButtons: [enButton, hrButton]
+  };
 }
 
 let failures = 0;
@@ -176,8 +239,13 @@ for (const id of script.matchAll(/getElementById\('([^']+)'\)/g)) {
 const CROATIAN = ['Zatvori', 'Pregled', 'Sljedeća', 'Prethodna', 'Klikni', 'Još nema', 'Snimljeno', 'zvijezda', 'integracije'];
 check('page is declared as English', /<html lang="en">/.test(html));
 check('no Croatian UI text left in index.html', !CROATIAN.some((w) => html.includes(w)));
-check('no Croatian UI text left in gallery-data.js',
-  !CROATIAN.some((w) => fs.readFileSync(path + '/gallery-data.js', 'utf8').includes(w)));
+const dataSource = fs.readFileSync(path + '/gallery-data.js', 'utf8');
+const dataJson = JSON.parse(dataSource.trim().slice('window.GALLERY_DATA = '.length).replace(/;\s*$/, ''));
+check('English fields carry no Croatian text',
+  !dataJson.photos.some((p) => CROATIAN.some((w) => (p.title + ' ' + p.caption).includes(w))));
+check('every photo has a Croatian title and caption',
+  dataJson.photos.every((p) => p.title_hr && p.caption_hr),
+  dataJson.photos.filter((p) => !p.title_hr || !p.caption_hr).map((p) => p.file).join(','));
 check('landing mentions the scope', /Seestar S50 Pro/.test(html));
 check('no mount claims (alt-az removed)', !/alt-az/i.test(html) && !/equatorial|polar align/i.test(html));
 check('landing links a light pollution map', /lightpollutionmap\.info/.test(html));
@@ -185,7 +253,15 @@ const objectsSource = fs.readFileSync(path + '/objects.js', 'utf8');
 check('no em dashes in the visible copy',
   !/—/.test(html) && !/—/.test(fs.readFileSync(path + '/gallery-data.js', 'utf8')) &&
   !/—/.test(objectsSource));
-check('object notes are English too', !CROATIAN.some((w) => objectsSource.includes(w)));
+const objectsCtx = { window: {} };
+vm.createContext(objectsCtx);
+vm.runInContext(objectsSource, objectsCtx);
+const objectEntries = Object.values(objectsCtx.window.OBJECTS);
+check('object notes are translated as well',
+  objectEntries.every((o) => o.title_hr && o.about_hr &&
+    Array.isArray(o.facts_hr) && o.facts_hr.length === o.facts.length),
+  objectEntries.filter((o) => !o.title_hr || !o.about_hr || !(o.facts_hr || []).length).length + ' missing');
+check('no em dashes in the translations', !/—/.test(fs.readFileSync(path + '/i18n.js', 'utf8')));
 check('gallery hint text removed', !html.includes('Scroll or drag') && !/id="gallery-hint"/.test(html));
 
 const css = html.slice(html.indexOf('<style>'), html.indexOf('</style>'));
@@ -251,8 +327,9 @@ check('the newest object is the first tile', cardKeys[0] === covers.map(keyOf).r
 check('the oldest object is the last tile',
   keyOf(covers[covers.length - 1]) === covers.map(keyOf).reduce((a, b) => (a < b ? a : b)),
   covers[covers.length - 1].group);
-check('hero uses the site title', real.tree['#site-title'].textContent === data.site.title);
-check('footer comes from the data file', real.tree['#site-footer'].textContent === data.site.footer);
+const english = real.sandbox.window.I18N.strings.en;
+check('hero uses the interface strings', real.tree['#site-title'].textContent === english.title);
+check('footer comes from the interface strings', real.tree['#site-footer'].textContent === english.footer);
 const copyrightText = (html.match(/<p class="copyright">([\s\S]*?)<\/p>/) || ['', ''])[1]
   .replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
 check('footer carries only a plain copyright line',
@@ -260,7 +337,8 @@ check('footer carries only a plain copyright line',
 check('copyright year is filled in at runtime',
   real.tree['#copyright-year'].textContent === String(new Date().getFullYear()),
   real.tree['#copyright-year'].textContent);
-check('document title follows the data file', real.document.title === data.site.title);
+check('document title follows the interface strings', real.document.title === english.title);
+check('page language is declared', real.document.documentElement.lang === 'en');
 
 const objects = real.sandbox.window.OBJECTS;
 const groupKeys = Array.from(new Set(data.photos.map((p) => p.group)));
@@ -488,6 +566,57 @@ const tall = gridCards.map((c, i) => ({
 check('portrait tiles span more rows than square ones',
   Math.max(...tall.filter((t) => t.ratio > 1.2).map((t) => t.span)) >
   Math.max(...tall.filter((t) => t.ratio <= 1.2).map((t) => t.span)));
+
+/* ---------------- languages ---------------- */
+section('languages');
+
+const enRun = harness('real', { languages: ['en-GB', 'en'] });
+const hrRun = harness('real', { languages: ['hr-HR', 'hr'] });
+const deRun = harness('real', { languages: ['de-DE', 'en'] });
+const storedRun = harness('real', { languages: ['en-GB'], stored: { 'astro-lang': 'hr' } });
+
+check('English browser gets English', enRun.document.documentElement.lang === 'en');
+check('Croatian browser gets Croatian', hrRun.document.documentElement.lang === 'hr');
+check('other browsers fall back to English', deRun.document.documentElement.lang === 'en');
+check('a saved choice wins over the browser', storedRun.document.documentElement.lang === 'hr');
+
+const hrStrings = hrRun.sandbox.window.I18N.strings.hr;
+check('Croatian title is applied', hrRun.tree['#site-title'].textContent === hrStrings.title,
+  hrRun.tree['#site-title'].textContent);
+check('Croatian intro is applied', hrRun.body.querySelectorAll('[data-i18n="intro1"]')[0].textContent === hrStrings.intro1);
+check('Croatian gallery heading is applied',
+  hrRun.body.querySelectorAll('[data-i18n="galleryHeading"]')[0].textContent === hrStrings.galleryHeading);
+check('Croatian button is marked active',
+  hrRun.langButtons[1].getAttribute('aria-pressed') === 'true' &&
+  hrRun.langButtons[0].getAttribute('aria-pressed') === 'false');
+check('html lang attribute follows the language', hrRun.document.documentElement.lang === 'hr');
+check('Croatian photo titles reach the tiles',
+  cardsOf(hrRun.strip)[0].children[1].children[0].textContent ===
+  hrRun.sandbox.window.GALLERY_DATA.photos.find((p) => p.group === 'ic443-jellyfish').title_hr,
+  cardsOf(hrRun.strip)[0].children[1].children[0].textContent);
+check('Croatian version label is pluralised',
+  findClass(cardsOf(hrRun.strip)[0], 'badge').textContent === '2 verzije',
+  findClass(cardsOf(hrRun.strip)[0], 'badge').textContent);
+
+cardsOf(hrRun.strip)[0].dispatch('click', {});
+const hrInfo = hrRun.sandbox.window.OBJECTS['ic443-jellyfish'];
+check('Croatian object note reaches the lightbox',
+  aboutBox(hrRun.lbCaption).children.find((n) => n.className === 'about-text').textContent === hrInfo.about_hr);
+check('Croatian facts labels reach the lightbox',
+  aboutBox(hrRun.lbCaption).children.find((n) => n.className === 'about-facts')
+    .children[0].children[0].textContent === hrInfo.facts_hr[0][0]);
+
+/* switching on the page */
+enRun.langButtons[1].dispatch('click', {});
+check('clicking HR switches the page', enRun.document.documentElement.lang === 'hr');
+check('clicking HR saves the choice', enRun.storage['astro-lang'] === 'hr', JSON.stringify(enRun.storage));
+check('clicking HR repaints the tiles',
+  cardsOf(enRun.strip)[0].children[1].children[0].textContent ===
+  enRun.sandbox.window.GALLERY_DATA.photos.find((p) => p.group === 'ic443-jellyfish').title_hr);
+enRun.langButtons[0].dispatch('click', {});
+check('clicking EN switches back', enRun.document.documentElement.lang === 'en');
+check('switching back restores the English title',
+  enRun.tree['#site-title'].textContent === enRun.sandbox.window.I18N.strings.en.title);
 
 console.log(failures ? '\n' + failures + ' FAILURE(S)' : '\nall checks passed');
 process.exit(failures ? 1 : 0);
