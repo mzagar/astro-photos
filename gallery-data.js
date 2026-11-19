@@ -238,6 +238,32 @@ window.GALLERY_DATA = {
       "variant": "wide",
       "width": 360,
       "height": 640
+    },
+    {
+      "file": "photos/2026-11-19-ic434-horsehead-36m-crop.jpg",
+      "thumb": "photos/thumbs/2026-11-19-ic434-horsehead-36m-crop.jpg",
+      "title": "IC 434, Horsehead Nebula",
+      "date": "2026-11-19",
+      "time": "01:43",
+      "caption": "36 min of integration · tight crop on Barnard 33, the Horsehead, just below Alnitak · captured 19 Nov 2026, 01:43.",
+      "group": "ic434-horsehead",
+      "integration": 36.0,
+      "variant": "crop",
+      "width": 359,
+      "height": 640
+    },
+    {
+      "file": "photos/2026-11-19-ic434-horsehead-36m-wide.jpg",
+      "thumb": "photos/thumbs/2026-11-19-ic434-horsehead-36m-wide.jpg",
+      "title": "IC 434, Horsehead Nebula",
+      "date": "2026-11-19",
+      "time": "01:43",
+      "caption": "36 min of integration · wider field, with the Flame Nebula (NGC 2024) at the top · captured 19 Nov 2026, 01:43.",
+      "group": "ic434-horsehead",
+      "integration": 36.0,
+      "variant": "wide",
+      "width": 360,
+      "height": 640
     }
   ]
 };
