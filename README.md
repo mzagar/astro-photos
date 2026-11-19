@@ -1,4 +1,4 @@
-# Astro photos — Donja Stubica
+# Backyard Deep Sky
 
 A small static gallery of my deep sky photographs, shot from a backyard in
 Donja Stubica, Croatia with a ZWO Seestar S50 Pro.

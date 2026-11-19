@@ -55,7 +55,7 @@ VARIANT_RE = re.compile(
 )
 
 SITE = {
-    "title": "Deep Sky from Donja Stubica",
+    "title": "Backyard Deep Sky",
     "subtitle": "Astro photos with a ZWO Seestar S50 Pro",
     "footer": (
         "Shot with a ZWO Seestar S50 Pro · stacked and processed in the Seestar app · "
