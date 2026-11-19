@@ -208,6 +208,7 @@ def main() -> None:
                 "thumb": rel_thumb,
                 "title": previous.get("title") or default_title,
                 "date": previous.get("date", date),
+                "time": previous.get("time", ""),
                 "caption": previous.get("caption", ""),
                 "group": slugify(default_title),
                 "integration": integration,
@@ -217,7 +218,7 @@ def main() -> None:
             }
         )
 
-    photos.sort(key=lambda entry: (entry.get("date") or "", entry["file"]), reverse=True)
+    photos.sort(key=lambda entry: (entry.get("date") or "", entry["file"]))
 
     expected = {entry["file"] for entry in photos} | {entry["thumb"] for entry in photos}
     orphans = sorted(

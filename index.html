@@ -646,7 +646,10 @@
           group.cover = group.variants[0];
         });
         out.sort(function (a, b) {
-          return String(b.cover.date || '').localeCompare(String(a.cover.date || ''));
+          // oldest first; the time of day breaks ties within one night
+          var ka = String(a.cover.date || '') + ' ' + String(a.cover.time || '');
+          var kb = String(b.cover.date || '') + ' ' + String(b.cover.time || '');
+          return ka.localeCompare(kb);
         });
         return out;
       }

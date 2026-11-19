@@ -75,7 +75,11 @@ U `gallery-data.js` uredi `title` / `date` / `caption`:
   "caption": "53 min of integration · AI-enhanced Seestar export" }
 ```
 
-Skripta čuva tvoje `title`/`date`/`caption` — ponovno pokretanje ih ne briše.
+Skripta čuva tvoje `title`/`date`/`time`/`caption` — ponovno pokretanje ih ne briše.
+`time` (`"20:23"`) je neobavezan i služi samo za redoslijed unutar iste noći.
+
+**Redoslijed na stranici:** kartice idu od najstarije snimke prema najnovijoj
+(`date` + `time` naslovne ekspozicije).
 
 Naslov sajta, podnaslov, intro i footer mijenjaš u `index.html` (intro tekst) i u
 `SITE` rječniku na vrhu `scripts/build_gallery.py` (title/subtitle/footer).
