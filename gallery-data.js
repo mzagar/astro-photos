@@ -355,6 +355,32 @@ window.GALLERY_DATA = {
       "variant": "",
       "width": 360,
       "height": 640
+    },
+    {
+      "file": "photos/2026-11-19-ic443-jellyfish-96m-stacked.jpg",
+      "thumb": "photos/thumbs/2026-11-19-ic443-jellyfish-96m-stacked.jpg",
+      "title": "IC 443, Jellyfish Nebula",
+      "date": "2026-11-19",
+      "time": "03:01",
+      "caption": "1 h 36 min of integration, the raw stack as the app saved it, with no AI enhancement · captured 19 Nov 2026, 03:01.",
+      "group": "ic443-jellyfish",
+      "integration": 96.0,
+      "variant": "stacked",
+      "width": 360,
+      "height": 640
+    },
+    {
+      "file": "photos/2026-11-19-ic443-jellyfish-96m.jpg",
+      "thumb": "photos/thumbs/2026-11-19-ic443-jellyfish-96m.jpg",
+      "title": "IC 443, Jellyfish Nebula",
+      "date": "2026-11-19",
+      "time": "03:01",
+      "caption": "1 h 36 min of integration, AI enhanced in the Seestar app · captured 19 Nov 2026, 03:01.",
+      "group": "ic443-jellyfish",
+      "integration": 96.0,
+      "variant": "",
+      "width": 360,
+      "height": 640
     }
   ]
 };
