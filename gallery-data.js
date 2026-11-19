@@ -329,6 +329,32 @@ window.GALLERY_DATA = {
       "variant": "wide",
       "width": 360,
       "height": 640
+    },
+    {
+      "file": "photos/2026-11-19-ic434-horsehead-89m-stacked.jpg",
+      "thumb": "photos/thumbs/2026-11-19-ic434-horsehead-89m-stacked.jpg",
+      "title": "IC 434, Horsehead Nebula",
+      "date": "2026-11-19",
+      "time": "00:53",
+      "caption": "1 h 29 min of integration, the raw stack as the app saved it, with no AI enhancement · captured 19 Nov 2026, 00:53.",
+      "group": "ic434-horsehead",
+      "integration": 89.0,
+      "variant": "stacked",
+      "width": 360,
+      "height": 640
+    },
+    {
+      "file": "photos/2026-11-19-ic434-horsehead-89m.jpg",
+      "thumb": "photos/thumbs/2026-11-19-ic434-horsehead-89m.jpg",
+      "title": "IC 434, Horsehead Nebula",
+      "date": "2026-11-19",
+      "time": "00:53",
+      "caption": "1 h 29 min of integration, AI enhanced in the Seestar app · captured 19 Nov 2026, 00:53.",
+      "group": "ic434-horsehead",
+      "integration": 89.0,
+      "variant": "",
+      "width": 360,
+      "height": 640
     }
   ]
 };
