@@ -599,6 +599,28 @@
         return rest ? hours + ' h ' + rest + ' min' : hours + ' h';
       }
 
+      /* "7 min · crop", "2 x" - whatever distinguishes this version. */
+      function variantLabel(photo) {
+        return [formatIntegration(photo.integration), photo.variant]
+          .filter(Boolean)
+          .join(' · ');
+      }
+
+      /* "1x" before "2x" before "10x", not alphabetical. */
+      function compareLabels(a, b) {
+        var na = /^(\d+(?:\.\d+)?)/.exec(a);
+        var nb = /^(\d+(?:\.\d+)?)/.exec(b);
+        if (na && nb) {
+          var diff = parseFloat(na[1]) - parseFloat(nb[1]);
+          if (diff) return diff;
+        } else if (na) {
+          return -1;
+        } else if (nb) {
+          return 1;
+        }
+        return a.localeCompare(b);
+      }
+
       /* Photos of the same object are grouped by `group`; the longest
          integration becomes the cover and the rest are offered as variants. */
       function buildGroups(list) {
@@ -619,7 +641,7 @@
             var bv = String(b.variant || '').toLowerCase();
             if (!av && bv) return -1;
             if (av && !bv) return 1;
-            return av.localeCompare(bv) || String(a.file).localeCompare(String(b.file));
+            return compareLabels(av, bv) || String(a.file).localeCompare(String(b.file));
           });
           group.cover = group.variants[0];
         });
@@ -719,8 +741,7 @@
           var chips = el('div', 'variants');
           chips.append(el('span', 'label', 'Exposures'));
           group.variants.forEach(function (variant, index) {
-            var chipLabel = formatIntegration(variant.integration) || variant.date || 'version';
-            if (variant.variant) chipLabel += ' · ' + variant.variant;
+            var chipLabel = variantLabel(variant) || variant.date || 'version';
             var chip = el('button', '', chipLabel);
             chip.type = 'button';
             chip.setAttribute('aria-pressed', index === variantIndex ? 'true' : 'false');

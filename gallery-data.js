@@ -18,6 +18,42 @@ window.GALLERY_DATA = {
       "height": 640
     },
     {
+      "file": "photos/2026-11-18-moon-4x.jpg",
+      "thumb": "photos/thumbs/2026-11-18-moon-4x.jpg",
+      "title": "The Moon",
+      "date": "2026-11-18",
+      "caption": "4× zoom — crater detail along the terminator · captured 18 Nov 2026, 19:08.",
+      "group": "moon",
+      "integration": null,
+      "variant": "4x",
+      "width": 360,
+      "height": 640
+    },
+    {
+      "file": "photos/2026-11-18-moon-2x.jpg",
+      "thumb": "photos/thumbs/2026-11-18-moon-2x.jpg",
+      "title": "The Moon",
+      "date": "2026-11-18",
+      "caption": "2× zoom on the terminator · captured 18 Nov 2026, 19:05.",
+      "group": "moon",
+      "integration": null,
+      "variant": "2x",
+      "width": 360,
+      "height": 640
+    },
+    {
+      "file": "photos/2026-11-18-moon-1x.jpg",
+      "thumb": "photos/thumbs/2026-11-18-moon-1x.jpg",
+      "title": "The Moon",
+      "date": "2026-11-18",
+      "caption": "The whole disc at 1× zoom · captured 18 Nov 2026, 19:04.",
+      "group": "moon",
+      "integration": null,
+      "variant": "1x",
+      "width": 360,
+      "height": 640
+    },
+    {
       "file": "photos/2026-11-18-m42-orion-6m.jpg",
       "thumb": "photos/thumbs/2026-11-18-m42-orion-6m.jpg",
       "title": "M42 — Orion Nebula",

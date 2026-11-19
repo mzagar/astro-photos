@@ -48,6 +48,10 @@ trajanja: `-7m-crop` i `-7m-wide`. Naslovnica je tada ona bez oznake, a ako su
 obje označene, prva po abecedi (`crop` prije `wide`). U lightboxu se gumbi
 razlikuju: `7 min · crop` i `7 min · wide`.
 
+Kad verzije **nemaju trajanje** (zoom, drugačija obrada), koristi dvostruku
+critcu: `--1x`, `--2x`, `--4x`. Grupiraju se po objektu, gumbi u lightboxu
+nose samo oznaku, a redoslijed je brojčani (`1x`, `2x`, `4x`, `10x`).
+
 Podržano: JPEG, PNG, TIFF. FITS/XISF prvo izvezi u JPEG/TIFF.
 Slike manje od ciljne veličine se **ne povećavaju** (nema gubitka kvalitete).
 

@@ -46,9 +46,12 @@ SOURCE_SUFFIXES = {".jpg", ".jpeg", ".png", ".tif", ".tiff"}
 # An optional label after the stamp separates versions of the same length:
 #   2026-11-18_m27-dumbbell-7m-crop.jpg     -> group `m27-dumbbell`, 7 min, "crop"
 #   2026-11-18_m27-dumbbell-7m-wide.jpg     -> group `m27-dumbbell`, 7 min, "wide"
+# A double dash adds a label without an integration time (zoom, processing...):
+#   2026-11-18_moon--2x.jpg                 -> group `moon`, no time, "2x"
 VARIANT_RE = re.compile(
-    r"^(?P<base>.+?)-(?:(?P<count>\d+(?:\.\d+)?)x(?P<seconds>\d+(?:\.\d+)?)s"
-    r"|(?P<minutes>\d+(?:\.\d+)?)m)(?:-(?P<label>[a-z0-9]+(?:-[a-z0-9]+)*))?$"
+    r"^(?P<base>.+?)(?:--(?P<only>[a-z0-9]+(?:-[a-z0-9]+)*)"
+    r"|-(?:(?P<count>\d+(?:\.\d+)?)x(?P<seconds>\d+(?:\.\d+)?)s"
+    r"|(?P<minutes>\d+(?:\.\d+)?)m)(?:-(?P<label>[a-z0-9]+(?:-[a-z0-9]+)*))?)$"
 )
 
 SITE = {
@@ -84,10 +87,12 @@ def split_variant(stem: str) -> tuple[str, float | None, str]:
         return stem, None, ""
     if match.group("minutes") is not None:
         minutes = float(match.group("minutes"))
-    else:
+    elif match.group("count") is not None:
         minutes = float(match.group("count")) * float(match.group("seconds")) / 60
-    label = (match.group("label") or "").replace("-", " ")
-    return match.group("base"), round(minutes, 1), label
+    else:
+        minutes = None  # label-only variant, no integration stamp
+    label = (match.group("only") or match.group("label") or "").replace("-", " ")
+    return match.group("base"), (round(minutes, 1) if minutes is not None else None), label
 
 
 ASTRO_PREFIXES = re.compile(r"^(ngc|ic|sh2|ldn|vdb|abell|pgc|arp|m)(\d.*)$", re.IGNORECASE)
