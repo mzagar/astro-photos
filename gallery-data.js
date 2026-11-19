@@ -8,7 +8,7 @@ window.GALLERY_DATA = {
     {
       "file": "photos/2026-11-14-m31-andromeda-15m.jpg",
       "thumb": "photos/thumbs/2026-11-14-m31-andromeda-15m.jpg",
-      "title": "M31 — Andromeda Galaxy",
+      "title": "M31, Andromeda Galaxy",
       "date": "2026-11-14",
       "time": "20:23",
       "caption": "15 min of integration, the first stack of the night · captured 14 Nov 2026, 20:23.",
@@ -21,7 +21,7 @@ window.GALLERY_DATA = {
     {
       "file": "photos/2026-11-14-m31-andromeda-21m.jpg",
       "thumb": "photos/thumbs/2026-11-14-m31-andromeda-21m.jpg",
-      "title": "M31 — Andromeda Galaxy",
+      "title": "M31, Andromeda Galaxy",
       "date": "2026-11-14",
       "time": "20:35",
       "caption": "21 min of integration · captured 14 Nov 2026, 20:35.",
@@ -34,7 +34,7 @@ window.GALLERY_DATA = {
     {
       "file": "photos/2026-11-14-m31-andromeda-36m.jpg",
       "thumb": "photos/thumbs/2026-11-14-m31-andromeda-36m.jpg",
-      "title": "M31 — Andromeda Galaxy",
+      "title": "M31, Andromeda Galaxy",
       "date": "2026-11-14",
       "time": "21:01",
       "caption": "36 min of integration, the deepest stack of the night · M110 is the small companion above the core · captured 14 Nov 2026, 21:01.",
@@ -47,7 +47,7 @@ window.GALLERY_DATA = {
     {
       "file": "photos/2026-11-14-m45-plejade-9m.jpg",
       "thumb": "photos/thumbs/2026-11-14-m45-plejade-9m.jpg",
-      "title": "M45 — Pleiades",
+      "title": "M45, Pleiades",
       "date": "2026-11-14",
       "time": "22:17",
       "caption": "9 min of integration · blue reflection nebulosity around the brightest stars · captured 14 Nov 2026, 22:17.",
@@ -60,7 +60,7 @@ window.GALLERY_DATA = {
     {
       "file": "photos/2026-11-14-ngc281-pacman-7m.jpg",
       "thumb": "photos/thumbs/2026-11-14-ngc281-pacman-7m.jpg",
-      "title": "NGC 281 — Pacman Nebula",
+      "title": "NGC 281, Pacman Nebula",
       "date": "2026-11-14",
       "time": "22:47",
       "caption": "7 min of integration · captured 14 Nov 2026, 22:47.",
@@ -73,7 +73,7 @@ window.GALLERY_DATA = {
     {
       "file": "photos/2026-11-16-m33-triangulum-45m.jpg",
       "thumb": "photos/thumbs/2026-11-16-m33-triangulum-45m.jpg",
-      "title": "M33 — Triangulum Galaxy",
+      "title": "M33, Triangulum Galaxy",
       "date": "2026-11-16",
       "time": "19:06",
       "caption": "45 min of integration · spiral arms and the bright HII knots of the Triangulum Galaxy · captured 16 Nov 2026, 19:06.",
@@ -86,7 +86,7 @@ window.GALLERY_DATA = {
     {
       "file": "photos/2026-11-18-m27-dumbbell-7m-crop.jpg",
       "thumb": "photos/thumbs/2026-11-18-m27-dumbbell-7m-crop.jpg",
-      "title": "M27 — Dumbbell Nebula",
+      "title": "M27, Dumbbell Nebula",
       "date": "2026-11-18",
       "time": "19:25",
       "caption": "7 min of integration · tight crop on the nebula · captured 18 Nov 2026, 19:25.",
@@ -99,7 +99,7 @@ window.GALLERY_DATA = {
     {
       "file": "photos/2026-11-18-m27-dumbbell-7m-wide.jpg",
       "thumb": "photos/thumbs/2026-11-18-m27-dumbbell-7m-wide.jpg",
-      "title": "M27 — Dumbbell Nebula",
+      "title": "M27, Dumbbell Nebula",
       "date": "2026-11-18",
       "time": "19:25",
       "caption": "7 min of integration · wide field, the same stack as the crop · captured 18 Nov 2026, 19:25.",
@@ -112,10 +112,10 @@ window.GALLERY_DATA = {
     {
       "file": "photos/2026-11-18-m42-orion-6m.jpg",
       "thumb": "photos/thumbs/2026-11-18-m42-orion-6m.jpg",
-      "title": "M42 — Orion Nebula",
+      "title": "M42, Orion Nebula",
       "date": "2026-11-18",
       "time": "23:15",
-      "caption": "35 × 10 s — 6 min of integration · captured 18 Nov 2026, 23:15.",
+      "caption": "35 × 10 s, 6 min of integration · captured 18 Nov 2026, 23:15.",
       "group": "m42-orion",
       "integration": 6.0,
       "variant": "",
@@ -154,7 +154,7 @@ window.GALLERY_DATA = {
       "title": "The Moon",
       "date": "2026-11-18",
       "time": "19:08",
-      "caption": "4× zoom — crater detail along the terminator · captured 18 Nov 2026, 19:08.",
+      "caption": "4× zoom, crater detail along the terminator · captured 18 Nov 2026, 19:08.",
       "group": "moon",
       "integration": null,
       "variant": "4x",
@@ -164,7 +164,7 @@ window.GALLERY_DATA = {
     {
       "file": "photos/2026-11-19-ic405-plamtecica-53m.jpg",
       "thumb": "photos/thumbs/2026-11-19-ic405-plamtecica-53m.jpg",
-      "title": "IC 405 — Flaming Star Nebula",
+      "title": "IC 405, Flaming Star Nebula",
       "date": "2026-11-19",
       "time": "00:29",
       "caption": "53 min of integration · captured 19 Nov 2026, 00:29.",
@@ -177,7 +177,7 @@ window.GALLERY_DATA = {
     {
       "file": "photos/2026-11-19-ic434-horsehead-22m-crop.jpg",
       "thumb": "photos/thumbs/2026-11-19-ic434-horsehead-22m-crop.jpg",
-      "title": "IC 434 — Horsehead Nebula",
+      "title": "IC 434, Horsehead Nebula",
       "date": "2026-11-19",
       "time": "01:23",
       "caption": "22 min of integration · tight crop on Barnard 33, the Horsehead, just below Alnitak · captured 19 Nov 2026, 01:23.",
@@ -190,7 +190,7 @@ window.GALLERY_DATA = {
     {
       "file": "photos/2026-11-19-ic434-horsehead-22m-wide.jpg",
       "thumb": "photos/thumbs/2026-11-19-ic434-horsehead-22m-wide.jpg",
-      "title": "IC 434 — Horsehead Nebula",
+      "title": "IC 434, Horsehead Nebula",
       "date": "2026-11-19",
       "time": "01:23",
       "caption": "22 min of integration · wider field, with the Flame Nebula (NGC 2024) at the top · captured 19 Nov 2026, 01:23.",
