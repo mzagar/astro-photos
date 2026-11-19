@@ -175,7 +175,16 @@ function harness(dataSource, options = {}) {
   };
 
   const storage = Object.assign({}, options.stored || {});
+  class ImageShim {
+    set src(value) {
+      this._src = value;
+      if (this.onload) this.onload();
+    }
+    get src() { return this._src; }
+  }
+
   const sandbox = {
+    Image: ImageShim,
     window: {
       innerWidth: 1200,
       innerHeight: 800,
@@ -369,7 +378,11 @@ check('all referenced image files exist on disk', missing.length === 0, missing.
 realCards[0].dispatch('click', {});
 const rlb = real.tree['#lightbox'];
 check('card click opens the lightbox', rlb.hidden === false);
-check('lightbox shows the full-size image', real.tree['#lb-img'].src === covers[0].file, real.tree['#lb-img'].src);
+check('lightbox shows the view layer', real.tree['#lb-img'].src === covers[0].view, real.tree['#lb-img'].src);
+check('the view layer is lighter than the full file',
+  fs.statSync(path + '/' + covers[0].view).size < fs.statSync(path + '/' + covers[0].file).size);
+check('every photo has a view layer',
+  data.photos.every((p) => p.view && fs.existsSync(path + '/' + p.view)));
 check('body scroll is locked', real.body.classList.contains('locked'));
 check('caption carries title, date, text and hint',
   captionText(real.lbCaption).includes(covers[0].title) &&
@@ -450,7 +463,7 @@ if (pairIndex >= 0) {
   const chipBox = variantsBox(real.lbCaption);
   chipBox.children.filter((c) => c.tagName === 'BUTTON')[1].dispatch('click', {});
   check('switching crop loads the wide field',
-    real.tree['#lb-img'].src === groupList[pairIndex][1].file, real.tree['#lb-img'].src);
+    real.tree['#lb-img'].src === groupList[pairIndex][1].view, real.tree['#lb-img'].src);
   real.document.dispatch('keydown', { key: 'Escape' });
 }
 

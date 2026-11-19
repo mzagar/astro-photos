@@ -38,7 +38,9 @@ Each photo entry:
 
 | field | meaning |
 |---|---|
-| `file`, `thumb` | paths under `photos/` |
+| `file` | full-size image, opened by the zoom viewer |
+| `view` | 1600 px layer, shown in the lightbox |
+| `thumb` | 640 px layer, used by the grid |
 | `title`, `caption` | hand-written, English |
 | `date` | capture date, `YYYY-MM-DD`, taken from the filename |
 | `time` | optional capture time `HH:MM`, hand-written, only used for ordering |
@@ -161,6 +163,11 @@ query when grepping the HTML.
   place. Arrow keys step between objects and reset to the cover.
 - Zoom overlay: wheel/pinch zoom, drag to pan, double tap for 1×/2.5×, `+`/`-`/`0`,
   `Esc`. `Esc` closes zoom first, then the lightbox.
+- Three sizes are generated per photo: `photos/` (full, up to 3840 px, q88),
+  `photos/view/` (1600 px, q80) and `photos/thumbs/` (640 px, q80). The grid uses
+  the thumb, the lightbox the view layer, and the fullscreen zoom the full file,
+  so opening a picture never waits for megabytes. The lightbox paints the thumb
+  first and swaps to the view layer once it has decoded.
 - Every published JPEG gets IPTC (APP13) and XMP (APP1) written by the build:
   `ObjectName` = title plus a variant stamp such as `(1 h 29 min · stacked)`,
   `Caption` = the English caption, `By-line` and `CopyrightNotice` = the author.

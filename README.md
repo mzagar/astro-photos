@@ -30,7 +30,8 @@ index.html                 the site — layout, lightbox, zoom
 gallery-data.js            generated index: titles, dates, captions (EN + HR)
 objects.js                 hand-written notes about each object, EN + HR
 i18n.js                    interface strings and language detection
-photos/                    web-sized images, photos/thumbs/ for the grid
+photos/                    web-sized images; photos/view/ for the lightbox,
+                           photos/thumbs/ for the grid
 scripts/build_gallery.py   resize and regenerate the data file (macOS `sips`)
 scripts/check_site.js      smoke-test for the page logic, no browser needed
 publish.sh                 build, commit, push

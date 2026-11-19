@@ -32,11 +32,14 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 PHOTOS_DIR = ROOT / "photos"
 THUMBS_DIR = PHOTOS_DIR / "thumbs"
+VIEWS_DIR = PHOTOS_DIR / "view"
 DATA_FILE = ROOT / "gallery-data.js"
 
 DATA_PREFIX = "window.GALLERY_DATA = "
 FULL_MAX_PX = 3840
 THUMB_MAX_PX = 640
+VIEW_MAX_PX = 1600
+VIEW_QUALITY = 80
 FULL_QUALITY = 88
 THUMB_QUALITY = 80
 SOURCE_SUFFIXES = {".jpg", ".jpeg", ".png", ".tif", ".tiff"}
@@ -286,12 +289,15 @@ def main() -> None:
         slug = slugify(source.stem)
         group, integration, variant = split_variant(source.stem)
         full = PHOTOS_DIR / f"{slug}.jpg"
+        view = VIEWS_DIR / f"{slug}.jpg"
         thumb = THUMBS_DIR / f"{slug}.jpg"
 
         resize(source, full, FULL_MAX_PX, FULL_QUALITY)
+        resize(source, view, VIEW_MAX_PX, VIEW_QUALITY)
         resize(source, thumb, THUMB_MAX_PX, THUMB_QUALITY)
 
         rel_full = full.relative_to(ROOT).as_posix()
+        rel_view = view.relative_to(ROOT).as_posix()
         rel_thumb = thumb.relative_to(ROOT).as_posix()
         previous = existing.get(rel_full, {})
         date, default_title = split_name(group)
@@ -299,15 +305,14 @@ def main() -> None:
 
         display_title = previous.get("title") or default_title
         label = " · ".join(part for part in [format_stamp(integration), variant] if part)
-        write_metadata(
-            full,
-            f"{display_title} ({label})" if label else display_title,
-            previous.get("caption", ""),
-        )
+        embedded = f"{display_title} ({label})" if label else display_title
+        write_metadata(full, embedded, previous.get("caption", ""))
+        write_metadata(view, embedded, previous.get("caption", ""))
 
         photos.append(
             {
                 "file": rel_full,
+                "view": rel_view,
                 "thumb": rel_thumb,
                 "title": previous.get("title") or default_title,
                 "title_hr": previous.get("title_hr", ""),
@@ -325,10 +330,14 @@ def main() -> None:
 
     photos.sort(key=lambda entry: (entry.get("date") or "", entry["file"]))
 
-    expected = {entry["file"] for entry in photos} | {entry["thumb"] for entry in photos}
+    expected = (
+        {entry["file"] for entry in photos}
+        | {entry["view"] for entry in photos}
+        | {entry["thumb"] for entry in photos}
+    )
     orphans = sorted(
         path.relative_to(ROOT).as_posix()
-        for directory in (PHOTOS_DIR, THUMBS_DIR)
+        for directory in (PHOTOS_DIR, VIEWS_DIR, THUMBS_DIR)
         if directory.is_dir()
         for path in directory.glob("*.jpg")
         if path.relative_to(ROOT).as_posix() not in expected

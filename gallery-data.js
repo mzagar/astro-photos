@@ -2,6 +2,7 @@ window.GALLERY_DATA = {
   "photos": [
     {
       "file": "photos/2026-11-14-m31-andromeda-15m.jpg",
+      "view": "photos/view/2026-11-14-m31-andromeda-15m.jpg",
       "thumb": "photos/thumbs/2026-11-14-m31-andromeda-15m.jpg",
       "title": "M31, Andromeda Galaxy",
       "title_hr": "M31, galaksija Andromeda",
@@ -17,6 +18,7 @@ window.GALLERY_DATA = {
     },
     {
       "file": "photos/2026-11-14-m31-andromeda-21m.jpg",
+      "view": "photos/view/2026-11-14-m31-andromeda-21m.jpg",
       "thumb": "photos/thumbs/2026-11-14-m31-andromeda-21m.jpg",
       "title": "M31, Andromeda Galaxy",
       "title_hr": "M31, galaksija Andromeda",
@@ -32,6 +34,7 @@ window.GALLERY_DATA = {
     },
     {
       "file": "photos/2026-11-14-m31-andromeda-36m-boosted.jpg",
+      "view": "photos/view/2026-11-14-m31-andromeda-36m-boosted.jpg",
       "thumb": "photos/thumbs/2026-11-14-m31-andromeda-36m-boosted.jpg",
       "title": "M31, Andromeda Galaxy",
       "title_hr": "M31, galaksija Andromeda",
@@ -47,6 +50,7 @@ window.GALLERY_DATA = {
     },
     {
       "file": "photos/2026-11-14-m31-andromeda-36m.jpg",
+      "view": "photos/view/2026-11-14-m31-andromeda-36m.jpg",
       "thumb": "photos/thumbs/2026-11-14-m31-andromeda-36m.jpg",
       "title": "M31, Andromeda Galaxy",
       "title_hr": "M31, galaksija Andromeda",
@@ -62,6 +66,7 @@ window.GALLERY_DATA = {
     },
     {
       "file": "photos/2026-11-14-m45-plejade-9m-boosted.jpg",
+      "view": "photos/view/2026-11-14-m45-plejade-9m-boosted.jpg",
       "thumb": "photos/thumbs/2026-11-14-m45-plejade-9m-boosted.jpg",
       "title": "M45, Pleiades",
       "title_hr": "M45, Plejade",
@@ -77,6 +82,7 @@ window.GALLERY_DATA = {
     },
     {
       "file": "photos/2026-11-14-m45-plejade-9m.jpg",
+      "view": "photos/view/2026-11-14-m45-plejade-9m.jpg",
       "thumb": "photos/thumbs/2026-11-14-m45-plejade-9m.jpg",
       "title": "M45, Pleiades",
       "title_hr": "M45, Plejade",
@@ -92,6 +98,7 @@ window.GALLERY_DATA = {
     },
     {
       "file": "photos/2026-11-14-ngc281-pacman-7m.jpg",
+      "view": "photos/view/2026-11-14-ngc281-pacman-7m.jpg",
       "thumb": "photos/thumbs/2026-11-14-ngc281-pacman-7m.jpg",
       "title": "NGC 281, Pacman Nebula",
       "title_hr": "NGC 281, maglica Pacman",
@@ -107,6 +114,7 @@ window.GALLERY_DATA = {
     },
     {
       "file": "photos/2026-11-16-m33-triangulum-45m-boosted.jpg",
+      "view": "photos/view/2026-11-16-m33-triangulum-45m-boosted.jpg",
       "thumb": "photos/thumbs/2026-11-16-m33-triangulum-45m-boosted.jpg",
       "title": "M33, Triangulum Galaxy",
       "title_hr": "M33, galaksija Trokut",
@@ -122,6 +130,7 @@ window.GALLERY_DATA = {
     },
     {
       "file": "photos/2026-11-16-m33-triangulum-45m.jpg",
+      "view": "photos/view/2026-11-16-m33-triangulum-45m.jpg",
       "thumb": "photos/thumbs/2026-11-16-m33-triangulum-45m.jpg",
       "title": "M33, Triangulum Galaxy",
       "title_hr": "M33, galaksija Trokut",
@@ -137,6 +146,7 @@ window.GALLERY_DATA = {
     },
     {
       "file": "photos/2026-11-18-m27-dumbbell-7m-crop.jpg",
+      "view": "photos/view/2026-11-18-m27-dumbbell-7m-crop.jpg",
       "thumb": "photos/thumbs/2026-11-18-m27-dumbbell-7m-crop.jpg",
       "title": "M27, Dumbbell Nebula",
       "title_hr": "M27, maglica Bučica",
@@ -152,6 +162,7 @@ window.GALLERY_DATA = {
     },
     {
       "file": "photos/2026-11-18-m27-dumbbell-7m-wide.jpg",
+      "view": "photos/view/2026-11-18-m27-dumbbell-7m-wide.jpg",
       "thumb": "photos/thumbs/2026-11-18-m27-dumbbell-7m-wide.jpg",
       "title": "M27, Dumbbell Nebula",
       "title_hr": "M27, maglica Bučica",
@@ -167,6 +178,7 @@ window.GALLERY_DATA = {
     },
     {
       "file": "photos/2026-11-18-m42-orion-22m-crop.jpg",
+      "view": "photos/view/2026-11-18-m42-orion-22m-crop.jpg",
       "thumb": "photos/thumbs/2026-11-18-m42-orion-22m-crop.jpg",
       "title": "M42, Orion Nebula",
       "title_hr": "M42, maglica Orion",
@@ -182,6 +194,7 @@ window.GALLERY_DATA = {
     },
     {
       "file": "photos/2026-11-18-m42-orion-23m-wide.jpg",
+      "view": "photos/view/2026-11-18-m42-orion-23m-wide.jpg",
       "thumb": "photos/thumbs/2026-11-18-m42-orion-23m-wide.jpg",
       "title": "M42, Orion Nebula",
       "title_hr": "M42, maglica Orion",
@@ -197,6 +210,7 @@ window.GALLERY_DATA = {
     },
     {
       "file": "photos/2026-11-18-m42-orion-57m-crop.jpg",
+      "view": "photos/view/2026-11-18-m42-orion-57m-crop.jpg",
       "thumb": "photos/thumbs/2026-11-18-m42-orion-57m-crop.jpg",
       "title": "M42, Orion Nebula",
       "title_hr": "M42, maglica Orion",
@@ -212,6 +226,7 @@ window.GALLERY_DATA = {
     },
     {
       "file": "photos/2026-11-18-m42-orion-6m-crop.jpg",
+      "view": "photos/view/2026-11-18-m42-orion-6m-crop.jpg",
       "thumb": "photos/thumbs/2026-11-18-m42-orion-6m-crop.jpg",
       "title": "M42, Orion Nebula",
       "title_hr": "M42, maglica Orion",
@@ -227,6 +242,7 @@ window.GALLERY_DATA = {
     },
     {
       "file": "photos/2026-11-18-m42-orion-6m.jpg",
+      "view": "photos/view/2026-11-18-m42-orion-6m.jpg",
       "thumb": "photos/thumbs/2026-11-18-m42-orion-6m.jpg",
       "title": "M42, Orion Nebula",
       "title_hr": "M42, maglica Orion",
@@ -242,6 +258,7 @@ window.GALLERY_DATA = {
     },
     {
       "file": "photos/2026-11-18-m42-orion-72m-crop.jpg",
+      "view": "photos/view/2026-11-18-m42-orion-72m-crop.jpg",
       "thumb": "photos/thumbs/2026-11-18-m42-orion-72m-crop.jpg",
       "title": "M42, Orion Nebula",
       "title_hr": "M42, maglica Orion",
@@ -257,6 +274,7 @@ window.GALLERY_DATA = {
     },
     {
       "file": "photos/2026-11-18-moon-1x.jpg",
+      "view": "photos/view/2026-11-18-moon-1x.jpg",
       "thumb": "photos/thumbs/2026-11-18-moon-1x.jpg",
       "title": "The Moon",
       "title_hr": "Mjesec",
@@ -272,6 +290,7 @@ window.GALLERY_DATA = {
     },
     {
       "file": "photos/2026-11-18-moon-2x.jpg",
+      "view": "photos/view/2026-11-18-moon-2x.jpg",
       "thumb": "photos/thumbs/2026-11-18-moon-2x.jpg",
       "title": "The Moon",
       "title_hr": "Mjesec",
@@ -287,6 +306,7 @@ window.GALLERY_DATA = {
     },
     {
       "file": "photos/2026-11-18-moon-4x.jpg",
+      "view": "photos/view/2026-11-18-moon-4x.jpg",
       "thumb": "photos/thumbs/2026-11-18-moon-4x.jpg",
       "title": "The Moon",
       "title_hr": "Mjesec",
@@ -302,6 +322,7 @@ window.GALLERY_DATA = {
     },
     {
       "file": "photos/2026-11-19-ic405-plamtecica-53m.jpg",
+      "view": "photos/view/2026-11-19-ic405-plamtecica-53m.jpg",
       "thumb": "photos/thumbs/2026-11-19-ic405-plamtecica-53m.jpg",
       "title": "IC 405, Flaming Star Nebula",
       "title_hr": "IC 405, maglica Plamteća zvijezda",
@@ -317,6 +338,7 @@ window.GALLERY_DATA = {
     },
     {
       "file": "photos/2026-11-19-ic434-horsehead-22m-crop.jpg",
+      "view": "photos/view/2026-11-19-ic434-horsehead-22m-crop.jpg",
       "thumb": "photos/thumbs/2026-11-19-ic434-horsehead-22m-crop.jpg",
       "title": "IC 434, Horsehead Nebula",
       "title_hr": "IC 434, maglica Konjska glava",
@@ -332,6 +354,7 @@ window.GALLERY_DATA = {
     },
     {
       "file": "photos/2026-11-19-ic434-horsehead-22m-wide.jpg",
+      "view": "photos/view/2026-11-19-ic434-horsehead-22m-wide.jpg",
       "thumb": "photos/thumbs/2026-11-19-ic434-horsehead-22m-wide.jpg",
       "title": "IC 434, Horsehead Nebula",
       "title_hr": "IC 434, maglica Konjska glava",
@@ -347,6 +370,7 @@ window.GALLERY_DATA = {
     },
     {
       "file": "photos/2026-11-19-ic434-horsehead-36m-crop.jpg",
+      "view": "photos/view/2026-11-19-ic434-horsehead-36m-crop.jpg",
       "thumb": "photos/thumbs/2026-11-19-ic434-horsehead-36m-crop.jpg",
       "title": "IC 434, Horsehead Nebula",
       "title_hr": "IC 434, maglica Konjska glava",
@@ -362,6 +386,7 @@ window.GALLERY_DATA = {
     },
     {
       "file": "photos/2026-11-19-ic434-horsehead-36m-wide.jpg",
+      "view": "photos/view/2026-11-19-ic434-horsehead-36m-wide.jpg",
       "thumb": "photos/thumbs/2026-11-19-ic434-horsehead-36m-wide.jpg",
       "title": "IC 434, Horsehead Nebula",
       "title_hr": "IC 434, maglica Konjska glava",
@@ -377,6 +402,7 @@ window.GALLERY_DATA = {
     },
     {
       "file": "photos/2026-11-19-ic434-horsehead-89m-stacked.jpg",
+      "view": "photos/view/2026-11-19-ic434-horsehead-89m-stacked.jpg",
       "thumb": "photos/thumbs/2026-11-19-ic434-horsehead-89m-stacked.jpg",
       "title": "IC 434, Horsehead Nebula",
       "title_hr": "IC 434, maglica Konjska glava",
@@ -392,6 +418,7 @@ window.GALLERY_DATA = {
     },
     {
       "file": "photos/2026-11-19-ic434-horsehead-89m.jpg",
+      "view": "photos/view/2026-11-19-ic434-horsehead-89m.jpg",
       "thumb": "photos/thumbs/2026-11-19-ic434-horsehead-89m.jpg",
       "title": "IC 434, Horsehead Nebula",
       "title_hr": "IC 434, maglica Konjska glava",
@@ -407,6 +434,7 @@ window.GALLERY_DATA = {
     },
     {
       "file": "photos/2026-11-19-ic443-jellyfish-96m-stacked.jpg",
+      "view": "photos/view/2026-11-19-ic443-jellyfish-96m-stacked.jpg",
       "thumb": "photos/thumbs/2026-11-19-ic443-jellyfish-96m-stacked.jpg",
       "title": "IC 443, Jellyfish Nebula",
       "title_hr": "IC 443, maglica Meduza",
@@ -422,6 +450,7 @@ window.GALLERY_DATA = {
     },
     {
       "file": "photos/2026-11-19-ic443-jellyfish-96m.jpg",
+      "view": "photos/view/2026-11-19-ic443-jellyfish-96m.jpg",
       "thumb": "photos/thumbs/2026-11-19-ic443-jellyfish-96m.jpg",
       "title": "IC 443, Jellyfish Nebula",
       "title_hr": "IC 443, maglica Meduza",

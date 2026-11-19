@@ -697,6 +697,18 @@
         return (lang !== 'en' && photo['caption_' + lang]) || photo.caption || '';
       }
 
+      /* Decode a URL before showing it, so the lightbox never goes blank. */
+      function preload(url, done) {
+        if (typeof Image === 'undefined') {
+          done();
+          return;
+        }
+        var image = new Image();
+        image.onload = done;
+        image.onerror = done;
+        image.src = url;
+      }
+
       function objectInfo(key) {
         var base = objects[key];
         if (!base) return null;
@@ -940,8 +952,14 @@
         if (!group) return;
         var photo = group.variants[variantIndex] || group.cover;
 
-        lbImg.src = photo.file;
+        var viewSrc = photo.view || photo.file;
+        lbImg.src = photo.thumb || viewSrc;          // instant placeholder
         lbImg.alt = photoTitle(photo);
+        preload(viewSrc, function () {
+          var shown = groups[groupIndex];
+          var active = shown && (shown.variants[variantIndex] || shown.cover);
+          if (active === photo) lbImg.src = viewSrc;  // swap when decoded
+        });
 
         lbCaption.textContent = '';
         lbCaption.append(el('div', 'lb-title', photoTitle(photo)));
