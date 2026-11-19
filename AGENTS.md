@@ -67,6 +67,20 @@ them after a rename.
 - Croatian needs the `versions` plural helper kept in step: 1 verzija, 2 verzije,
   5 verzija.
 
+### Croatian style rules
+
+- Natural standard Croatian, no untranslated anglicisms: `pametni teleskop`
+  (not "smart scope"), `mobitel` (not "telefon"), `snimka` (not "slika") for an
+  astrophoto.
+- The `astro-` prefix is written joined: `astrofotografija`, `astrofotografije`.
+- Terminology: stacking → `slaganje` / `složena snimka`; stretching →
+  `razvlačenje` / `razvučena snimka`; denoising → `čišćenje od šuma`;
+  integration → `integracija` / `trajanje integracije`; exposure → `ekspozicija`;
+  deep sky → `duboko nebo`.
+- Keep the author's voice: relaxed and personal, but technically informed.
+- `scripts/check_site.js` enforces the obvious ones (banned words, `slika`,
+  spaced `astro-`).
+
 ## Filename convention
 
 `YYYY-MM-DD_object[-<minutes>m[-<label>] | --<label>].jpg`

@@ -606,6 +606,27 @@ check('Croatian facts labels reach the lightbox',
   aboutBox(hrRun.lbCaption).children.find((n) => n.className === 'about-facts')
     .children[0].children[0].textContent === hrInfo.facts_hr[0][0]);
 
+/* Croatian style rules */
+const hrValues = (v) => {
+  if (typeof v === 'string') return [v];
+  if (Array.isArray(v)) return v.flatMap(hrValues);
+  if (v && typeof v === 'object') return Object.values(v).flatMap(hrValues);
+  return [];
+};
+const hrCopy = JSON.stringify([
+  hrValues(hrStrings),
+  hrValues(hrRun.sandbox.window.I18N.aria.hr),
+  hrValues(hrRun.sandbox.window.GALLERY_DATA.photos.map((p) => [p.title_hr, p.caption_hr])),
+  hrValues(Object.values(hrRun.sandbox.window.OBJECTS).map((o) => [o.title_hr, o.about_hr, o.facts_hr]))
+]);
+check('Croatian copy avoids untranslated anglicisms',
+  !/\b(smart scope|stack|stacked|stretching|denois\w*|exposure|exposures)\b/i.test(hrCopy),
+  (hrCopy.match(/\b(smart scope|stack|stacked|stretching|denois\w*|exposure|exposures)\b/i) || [''])[0]);
+check('Croatian copy uses snimka instead of slika', !/\bslik/i.test(hrCopy),
+  (hrCopy.match(/.{0,30}\bslik.{0,30}/i) || [''])[0]);
+check('astro- prefix is written joined', !/astro\s+[a-zšđčćž]/i.test(hrCopy) && /Astrofotografije/.test(hrCopy));
+check('Croatian copy says pametni teleskop', /pametnom teleskopu/.test(hrStrings.intro1));
+
 /* switching on the page */
 enRun.langButtons[1].dispatch('click', {});
 check('clicking HR switches the page', enRun.document.documentElement.lang === 'hr');

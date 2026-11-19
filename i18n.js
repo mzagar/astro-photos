@@ -42,20 +42,21 @@ window.I18N = {
     },
     hr: {
       title: "Duboko nebo iz dvorišta",
-      subtitle: "Astro fotografije sa ZWO Seestar S50 Pro",
+      subtitle: "Astrofotografije teleskopom ZWO Seestar S50 Pro",
       intro1:
         "Fotografiram objekte dubokog neba iz svog dvorišta u Donjoj Stubici, malom " +
         "mjestu u Hrvatskom zagorju, u podnožju Medvednice, tridesetak kilometara " +
-        "sjeverno od Zagreba. Teleskop je smart scope koji stane u ruksak: stavim ga " +
-        "na tlo, odaberem metu u aplikaciji na telefonu, a on sam pronađe i prati objekt.",
+        "sjeverno od Zagreba. Riječ je o pametnom teleskopu koji stane u ruksak: " +
+        "stavim ga na tlo, odaberem cilj u aplikaciji na mobitelu, a on ga sam pronađe " +
+        "i prati.",
       intro2:
-        "Svaka je snimka složena od mnogo kratkih ekspozicija, rastegnuta i očišćena " +
-        "od šuma u aplikaciji Seestar. Vodeni žig u kutu dodaje sama aplikacija, pa uz " +
-        "sliku uvijek idu objekt, vrijeme i trajanje integracije.",
+        "Svaka je snimka složena od mnogo kratkih ekspozicija, razvučena i očišćena od " +
+        "šuma u aplikaciji Seestar. Vodeni žig u kutu dodaje sama aplikacija, pa uz " +
+        "snimku uvijek ostaju zabilježeni objekt, vrijeme i trajanje integracije.",
       galleryHeading: "Galerija",
       place: "Donja Stubica, Hrvatska",
       map: "karta svjetlosnog onečišćenja ↗",
-      empty: "Još nema slika. Ubaci izvoze u masters/ i pokreni scripts/build_gallery.py.",
+      empty: "Još nema snimaka. Ubaci izvoze u masters/ i pokreni scripts/build_gallery.py.",
       versions: function (n) {
         var tens = n % 100;
         if (tens >= 11 && tens <= 14) return n + " verzija";
@@ -65,14 +66,14 @@ window.I18N = {
         return n + " verzija";
       },
       exposures: "Ekspozicije",
-      hintZoom: "Klikni sliku za punu veličinu i zumiranje",
-      hintSwitch: "promijeni verziju gore",
+      hintZoom: "Klikni snimku za punu veličinu i zumiranje",
+      hintSwitch: "promijeni verziju iznad",
       aboutTitle: "O objektu: {name}",
       wiki: "Wikipedija ↗",
       more: "Otvori za detalje",
       footer:
-        "Snimljeno sa ZWO Seestar S50 Pro · složeno i obrađeno u aplikaciji Seestar · " +
-        "Donja Stubica, Hrvatska"
+        "Snimljeno teleskopom ZWO Seestar S50 Pro · složeno i obrađeno u aplikaciji " +
+        "Seestar · Donja Stubica, Hrvatska"
     }
   },
 
@@ -94,17 +95,17 @@ window.I18N = {
     },
     hr: {
       lang: "Jezik",
-      photos: "Slike",
-      viewer: "Pregled slike",
+      photos: "Snimke",
+      viewer: "Pregled snimke",
       close: "Zatvori",
-      prev: "Prethodna slika",
-      next: "Sljedeća slika",
+      prev: "Prethodna snimka",
+      next: "Sljedeća snimka",
       media: "Otvori punu veličinu i zumiranje",
-      fullPhoto: "Slika pune veličine",
+      fullPhoto: "Snimka pune veličine",
       zoomIn: "Povećaj",
       zoomOut: "Umanji",
       zoomReset: "Vrati zum",
-      zoomClose: "Zatvori punu sliku",
+      zoomClose: "Zatvori punu snimku",
       openDetails: "otvori detalje"
     }
   }
