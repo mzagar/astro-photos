@@ -1,6 +1,22 @@
 window.GALLERY_DATA = {
   "photos": [
     {
+      "file": "photos/2026-11-14-m31-andromeda-11m.jpg",
+      "view": "photos/view/2026-11-14-m31-andromeda-11m.jpg",
+      "thumb": "photos/thumbs/2026-11-14-m31-andromeda-11m.jpg",
+      "title": "M31, Andromeda Galaxy",
+      "title_hr": "M31, galaksija Andromeda",
+      "date": "2026-11-14",
+      "time": "20:17",
+      "caption": "11 min of integration, an early stack · captured 14 Nov 2026, 20:17.",
+      "caption_hr": "11 min integracije, ranije slaganje · snimljeno 14. 11. 2026. u 20:17.",
+      "group": "m31-andromeda",
+      "integration": 11.0,
+      "variant": "",
+      "width": 360,
+      "height": 640
+    },
+    {
       "file": "photos/2026-11-14-m31-andromeda-15m.jpg",
       "view": "photos/view/2026-11-14-m31-andromeda-15m.jpg",
       "thumb": "photos/thumbs/2026-11-14-m31-andromeda-15m.jpg",
@@ -62,6 +78,38 @@ window.GALLERY_DATA = {
       "integration": 36.0,
       "variant": "",
       "width": 640,
+      "height": 640
+    },
+    {
+      "file": "photos/2026-11-14-m31-andromeda-5m.jpg",
+      "view": "photos/view/2026-11-14-m31-andromeda-5m.jpg",
+      "thumb": "photos/thumbs/2026-11-14-m31-andromeda-5m.jpg",
+      "title": "M31, Andromeda Galaxy",
+      "title_hr": "M31, galaksija Andromeda",
+      "date": "2026-11-14",
+      "time": "20:08",
+      "caption": "5 min of integration, the first frames of the night · captured 14 Nov 2026, 20:08.",
+      "caption_hr": "5 min integracije, prvi kadrovi te noći · snimljeno 14. 11. 2026. u 20:08.",
+      "group": "m31-andromeda",
+      "integration": 5.0,
+      "variant": "",
+      "width": 360,
+      "height": 640
+    },
+    {
+      "file": "photos/2026-11-14-m31-andromeda-67m.jpg",
+      "view": "photos/view/2026-11-14-m31-andromeda-67m.jpg",
+      "thumb": "photos/thumbs/2026-11-14-m31-andromeda-67m.jpg",
+      "title": "M31, Andromeda Galaxy",
+      "title_hr": "M31, galaksija Andromeda",
+      "date": "2026-11-14",
+      "time": "22:02",
+      "caption": "1 h 7 min of integration, the deepest stack of the night · captured 14 Nov 2026, 22:02.",
+      "caption_hr": "1 h 7 min integracije, najdublja složena snimka te noći · snimljeno 14. 11. 2026. u 22:02.",
+      "group": "m31-andromeda",
+      "integration": 67.0,
+      "variant": "",
+      "width": 360,
       "height": 640
     },
     {
@@ -349,6 +397,22 @@ window.GALLERY_DATA = {
       "group": "moon",
       "integration": null,
       "variant": "1x",
+      "width": 360,
+      "height": 640
+    },
+    {
+      "file": "photos/2026-11-18-moon-2x-1905.jpg",
+      "view": "photos/view/2026-11-18-moon-2x-1905.jpg",
+      "thumb": "photos/thumbs/2026-11-18-moon-2x-1905.jpg",
+      "title": "The Moon",
+      "title_hr": "Mjesec",
+      "date": "2026-11-18",
+      "time": "19:05",
+      "caption": "2× zoom on the terminator, two minutes before the other 2× frame · captured 18 Nov 2026, 19:05.",
+      "caption_hr": "Povećanje 2× na terminatoru, dvije minute prije drugog 2× kadra · snimljeno 18. 11. 2026. u 19:05.",
+      "group": "moon",
+      "integration": null,
+      "variant": "2x 1905",
       "width": 360,
       "height": 640
     },
