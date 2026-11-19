@@ -71,6 +71,19 @@ window.GALLERY_DATA = {
       "height": 640
     },
     {
+      "file": "photos/2026-11-16-m33-triangulum-45m.jpg",
+      "thumb": "photos/thumbs/2026-11-16-m33-triangulum-45m.jpg",
+      "title": "M33 — Triangulum Galaxy",
+      "date": "2026-11-16",
+      "time": "19:06",
+      "caption": "45 min of integration · spiral arms and the bright HII knots of the Triangulum Galaxy · captured 16 Nov 2026, 19:06.",
+      "group": "m33-triangulum",
+      "integration": 45.0,
+      "variant": "",
+      "width": 640,
+      "height": 640
+    },
+    {
       "file": "photos/2026-11-18-m27-dumbbell-7m-crop.jpg",
       "thumb": "photos/thumbs/2026-11-18-m27-dumbbell-7m-crop.jpg",
       "title": "M27 — Dumbbell Nebula",
@@ -159,6 +172,32 @@ window.GALLERY_DATA = {
       "integration": 53.0,
       "variant": "",
       "width": 640,
+      "height": 640
+    },
+    {
+      "file": "photos/2026-11-19-ic434-horsehead-22m-crop.jpg",
+      "thumb": "photos/thumbs/2026-11-19-ic434-horsehead-22m-crop.jpg",
+      "title": "IC 434 — Horsehead Nebula",
+      "date": "2026-11-19",
+      "time": "01:23",
+      "caption": "22 min of integration · tight crop on Barnard 33, the Horsehead, just below Alnitak · captured 19 Nov 2026, 01:23.",
+      "group": "ic434-horsehead",
+      "integration": 22.0,
+      "variant": "crop",
+      "width": 359,
+      "height": 640
+    },
+    {
+      "file": "photos/2026-11-19-ic434-horsehead-22m-wide.jpg",
+      "thumb": "photos/thumbs/2026-11-19-ic434-horsehead-22m-wide.jpg",
+      "title": "IC 434 — Horsehead Nebula",
+      "date": "2026-11-19",
+      "time": "01:23",
+      "caption": "22 min of integration · wider field, with the Flame Nebula (NGC 2024) at the top · captured 19 Nov 2026, 01:23.",
+      "group": "ic434-horsehead",
+      "integration": 22.0,
+      "variant": "wide",
+      "width": 360,
       "height": 640
     }
   ]
