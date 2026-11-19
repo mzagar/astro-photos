@@ -352,6 +352,17 @@ check('every description has facts', Object.values(objects).every((o) => Array.i
 check('descriptions stay short', Object.values(objects).every((o) => o.about.split(/\s+/).length <= 60),
   Object.entries(objects).filter(([, o]) => o.about.split(/\s+/).length > 60).map(([k]) => k).join(','));
 
+/* every published photo carries a title and description in its metadata */
+const metaSample = fs.readFileSync(path + '/' + covers[0].file);
+check('web images embed IPTC metadata',
+  metaSample.includes(Buffer.from('8BIM')) && metaSample.includes(Buffer.from('Photoshop 3.0')));
+check('web images embed the title as IPTC ObjectName',
+  metaSample.includes(Buffer.from(covers[0].title)));
+check('web images embed a description',
+  metaSample.includes(Buffer.from(covers[0].caption.slice(0, 40))),
+  covers[0].caption.slice(0, 40));
+check('web images credit the author', metaSample.includes(Buffer.from('Mario Žagar')));
+
 const missing = data.photos.flatMap((p) => [p.file, p.thumb]).filter((f) => !fs.existsSync(path + '/' + f));
 check('all referenced image files exist on disk', missing.length === 0, missing.join(', '));
 

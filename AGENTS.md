@@ -161,6 +161,12 @@ query when grepping the HTML.
   place. Arrow keys step between objects and reset to the cover.
 - Zoom overlay: wheel/pinch zoom, drag to pan, double tap for 1×/2.5×, `+`/`-`/`0`,
   `Esc`. `Esc` closes zoom first, then the lightbox.
+- Every published JPEG gets IPTC (APP13) and XMP (APP1) written by the build:
+  `ObjectName` = title plus a variant stamp such as `(1 h 29 min · stacked)`,
+  `Caption` = the English caption, `By-line` and `CopyrightNotice` = the author.
+  `write_metadata()` strips existing blocks first, so it is idempotent. macOS and
+  iOS read these, so a downloaded photo shows a real title in Photos instead of a
+  bare filename.
 - The `About` block is built from `window.OBJECTS[group]` and appended to the
   lightbox caption; a missing entry simply renders nothing.
 - Tiles with an entry show a small `i` badge that reveals a hover tooltip

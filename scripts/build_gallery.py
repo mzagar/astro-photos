@@ -23,6 +23,7 @@ from __future__ import annotations
 import json
 import re
 import shutil
+import struct
 import subprocess
 import sys
 from functools import lru_cache
@@ -68,6 +69,15 @@ def slugify(name: str) -> str:
     slug = name.lower().strip()
     slug = re.sub(r"[^a-z0-9]+", "-", slug)
     return slug.strip("-")
+
+
+def format_stamp(minutes: float | None) -> str:
+    if not minutes:
+        return ""
+    if minutes < 60:
+        return f"{round(minutes)} min"
+    hours, rest = divmod(round(minutes), 60)
+    return f"{hours} h {rest} min" if rest else f"{hours} h"
 
 
 def split_variant(stem: str) -> tuple[str, float | None, str]:
@@ -145,6 +155,101 @@ def resize(source: Path, target: Path, max_px: int, quality: int) -> None:
     subprocess.run(command, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
 
+ARTIST = "Mario Žagar"
+COPYRIGHT = "© Mario Žagar"
+
+
+def _iptc_chunk(title: str, caption: str) -> bytes:
+    records = b""
+
+    def record(dataset: int, value: str) -> bytes:
+        data = value.encode("utf-8")
+        return bytes([0x1C, 0x02, dataset]) + struct.pack(">H", len(data)) + data
+
+    records += record(5, title)
+    records += record(80, ARTIST)
+    records += record(116, COPYRIGHT)
+    if caption:
+        records += record(120, caption)
+    return records
+
+
+def _app13(title: str, caption: str) -> bytes:
+    iim = _iptc_chunk(title, caption)
+    payload = b"Photoshop 3.0\x00"
+    payload += b"8BIM" + struct.pack(">H", 0x0404) + b"\x00\x00"
+    payload += struct.pack(">I", len(iim)) + iim
+    if len(iim) % 2:
+        payload += b"\x00"
+    return b"\xFF\xED" + struct.pack(">H", len(payload) + 2) + payload
+
+
+def _app1_xmp(title: str, caption: str) -> bytes:
+    def escape(value: str) -> str:
+        return value.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+
+    description = (
+        "   <dc:description><rdf:Alt><rdf:li xml:lang=\"x-default\">"
+        + escape(caption)
+        + "</rdf:li></rdf:Alt></dc:description>\n"
+        if caption
+        else ""
+    )
+    xml = (
+        '<?xpacket begin="\ufeff" id="W5M0MpCehiHzreSzNTczkc9d"?>\n'
+        '<x:xmpmeta xmlns:x="adobe:ns:meta/">\n'
+        ' <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">\n'
+        '  <rdf:Description rdf:about="" xmlns:dc="http://purl.org/dc/elements/1.1/">\n'
+        '   <dc:title><rdf:Alt><rdf:li xml:lang="x-default">' + escape(title) + "</rdf:li></rdf:Alt></dc:title>\n"
+        + description
+        + "   <dc:creator><rdf:Seq><rdf:li>" + escape(ARTIST) + "</rdf:li></rdf:Seq></dc:creator>\n"
+        "   <dc:rights><rdf:Alt><rdf:li xml:lang=\"x-default\">" + escape(COPYRIGHT) + "</rdf:li></rdf:Alt></dc:rights>\n"
+        "  </rdf:Description>\n"
+        " </rdf:RDF>\n"
+        "</x:xmpmeta>\n"
+        '<?xpacket end="w"?>'
+    ).encode("utf-8")
+    payload = b"http://ns.adobe.com/xap/1.0/\x00" + xml
+    return b"\xFF\xE1" + struct.pack(">H", len(payload) + 2) + payload
+
+
+def _without_metadata(data: bytes) -> bytes:
+    """Drop existing IPTC and XMP segments so metadata can be rewritten."""
+    out = bytearray(data[:2])
+    i = 2
+    while i < len(data) - 1:
+        if data[i] != 0xFF:
+            out += data[i:]
+            break
+        marker = data[i + 1]
+        if marker == 0xDA:
+            out += data[i:]
+            break
+        if marker in (0xD8, 0xD9) or 0xD0 <= marker <= 0xD7:
+            out += data[i:i + 2]
+            i += 2
+            continue
+        length = struct.unpack(">H", data[i + 2:i + 4])[0]
+        payload = data[i + 4:i + 2 + length]
+        keep = True
+        if marker == 0xED and payload[:4] == b"Phot":
+            keep = False
+        if marker == 0xE1 and (payload[:29] == b"http://ns.adobe.com/xap/1.0/\x00" or b"<x:xmpmeta" in payload):
+            keep = False
+        if keep:
+            out += data[i:i + 2 + length]
+        i += 2 + length
+    return bytes(out)
+
+
+def write_metadata(path: Path, title: str, caption: str) -> None:
+    """Embed a title, description, author and copyright so Photos apps show them."""
+    data = path.read_bytes()
+    clean = _without_metadata(data)
+    block = _app13(title, caption) + _app1_xmp(title, caption)
+    path.write_bytes(clean[:2] + block + clean[2:])
+
+
 @lru_cache(maxsize=None)
 def dimensions(path: Path) -> tuple[int | None, int | None]:
     """Intrinsic size of an image, so the grid reserves space while loading."""
@@ -191,6 +296,14 @@ def main() -> None:
         previous = existing.get(rel_full, {})
         date, default_title = split_name(group)
         width, height = dimensions(thumb)
+
+        display_title = previous.get("title") or default_title
+        label = " · ".join(part for part in [format_stamp(integration), variant] if part)
+        write_metadata(
+            full,
+            f"{display_title} ({label})" if label else display_title,
+            previous.get("caption", ""),
+        )
 
         photos.append(
             {
