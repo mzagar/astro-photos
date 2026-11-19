@@ -8,7 +8,7 @@ Donja Stubica, Croatia with a ZWO Seestar S50 Pro.
 ## What this is
 
 - Kept locally in `masters/`: the finished, watermarked exports from the Seestar app.
-- `scripts/build_gallery.py` resizes each export into `photos/` (up to 2560 px) and
+- `scripts/build_gallery.py` resizes each export into `photos/` (up to 3840 px) and
   `photos/thumbs/` (640 px), then regenerates `gallery-data.js`.
 - `index.html` is the whole site: plain HTML, CSS and JavaScript, no framework,
   no build step, no external dependencies. It renders the tile grid, the lightbox
