@@ -18,7 +18,7 @@ window.OBJECTS = {
     wiki: "https://en.wikipedia.org/wiki/Andromeda_Galaxy",
     title_hr: "M31, galaksija Andromeda",
     about_hr:
-      "Andromeda je nama najbliža velika spiralna galaksija i najudaljeniji objekt koji se vidi golim okom. Otprilike je dvostruko šira od Mliječne staze i približava nam se oko 110 km u sekundi; njih dvije spojit će se za nekoliko milijardi godina.",
+      "Andromeda je najbliža velika spiralna galaksija i najudaljeniji objekt koji se vidi golim okom. Otprilike je dvostruko šira od Mliječne staze i približava nam se oko 110 km u sekundi; njih dvije spojit će se za nekoliko milijardi godina.",
     facts_hr: [["Udaljenost", "≈2,5 milijuna svjetlosnih godina"], ["Tip", "Spiralna (SA(s)b)"], ["Širina", "≈220 000 svjetlosnih godina"], ["Zviježđe", "Andromeda"]]
   },
   "m33-triangulum": {
@@ -111,7 +111,7 @@ window.OBJECTS = {
     wiki: "https://en.wikipedia.org/wiki/NGC_281",
     title_hr: "NGC 281, maglica Pacman",
     about_hr:
-      "NGC 281 je oblak vodika u Kasiopeji u kojem mladi skup IC 1590 urezuje šupljinu. Tamni oblici koji su mu dali nadimak Pacman su trake prašine ispred sjaja.",
+      "NGC 281 je oblak vodika u Kasiopeji u kojem mladi skup IC 1590 iznutra probija šupljinu. Tamni oblici koji su mu dali nadimak Pacman su trake prašine ispred sjaja.",
     facts_hr: [["Udaljenost", "≈9 200 svjetlosnih godina"], ["Tip", "Emisijska maglica"], ["Skup", "IC 1590"], ["Zviježđe", "Kasiopeja"]]
   },
   "ic405-plamtecica": {
@@ -129,7 +129,7 @@ window.OBJECTS = {
     wiki: "https://en.wikipedia.org/wiki/Flaming_Star_Nebula",
     title_hr: "IC 405, maglica Plamteća zvijezda",
     about_hr:
-      "IC 405 obasjava AE Aurigae, vruća zvijezda koja kroz oblak samo prolazi velikom brzinom i nije u njemu nastala. Njezino ultraljubičasto svjetlo čini da vodik svijetli crveno, dok obližnja prašina raspršuje plavo.",
+      "IC 405 obasjava AE Aurigae, vruća zvijezda koja kroz oblak prolazi velikom brzinom i nije u njemu nastala. Njezino ultraljubičasto svjetlo čini da vodik svijetli crveno, dok obližnja prašina raspršuje plavo.",
     facts_hr: [["Udaljenost", "≈1 500 svjetlosnih godina"], ["Tip", "Emisijska i refleksijska"], ["Širina", "≈5 svjetlosnih godina"], ["Zviježđe", "Kočijaš"]]
   },
   "ic434-horsehead": {
@@ -147,7 +147,7 @@ window.OBJECTS = {
     wiki: "https://en.wikipedia.org/wiki/Horsehead_Nebula",
     title_hr: "IC 434 i Konjska glava",
     about_hr:
-      "Konjska glava je tamni oblak prašine, Barnard 33, koji vidimo kao siluetu na crvenom sjaju IC 434. Nalazi se odmah pod Alnitakom, najistočnijom zvijezdom Orionova pojasa, a svjetlost oko njega polako troši njegov oblik.",
+      "Konjska glava je tamni oblak prašine, Barnard 33, koji vidimo kao siluetu na crvenom sjaju IC 434. Nalazi se odmah pod Alnitakom, najistočnijom zvijezdom Orionova pojasa, a svjetlost iz okoline polako nagriza njegov oblik.",
     facts_hr: [["Udaljenost", "≈1 375 svjetlosnih godina"], ["Tip", "Tamna maglica (B33)"], ["Veličina", "≈3,5 svjetlosne godine"], ["Zviježđe", "Orion"]]
   },
   "ic443-jellyfish": {

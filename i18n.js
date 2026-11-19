@@ -45,13 +45,13 @@ window.I18N = {
       subtitle: "Astro fotografije sa ZWO Seestar S50 Pro",
       intro1:
         "Fotografiram objekte dubokog neba iz svog dvorišta u Donjoj Stubici, malom " +
-        "mjestu u zagorskom pobrđu tridesetak kilometara sjeverno od Zagreba. " +
-        "Teleskop je smart scope koji stane u ruksak: stavim ga na tlo, odaberem metu " +
-        "u aplikaciji na telefonu i on sam pronađe i prati objekt.",
+        "mjestu u Hrvatskom zagorju, u podnožju Medvednice, tridesetak kilometara " +
+        "sjeverno od Zagreba. Teleskop je smart scope koji stane u ruksak: stavim ga " +
+        "na tlo, odaberem metu u aplikaciji na telefonu, a on sam pronađe i prati objekt.",
       intro2:
-        "Svaka je snimka složena od mnogo kratkih ekspozicija, rastegnuta i pročišćena " +
-        "u aplikaciji Seestar, a žig u kutu dodaje sama aplikacija, pa objekt, vrijeme " +
-        "i trajanje integracije putuju zajedno s datotekom.",
+        "Svaka je snimka složena od mnogo kratkih ekspozicija, rastegnuta i očišćena " +
+        "od šuma u aplikaciji Seestar. Vodeni žig u kutu dodaje sama aplikacija, pa uz " +
+        "sliku uvijek idu objekt, vrijeme i trajanje integracije.",
       galleryHeading: "Galerija",
       place: "Donja Stubica, Hrvatska",
       map: "karta svjetlosnog onečišćenja ↗",
