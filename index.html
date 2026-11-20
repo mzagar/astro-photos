@@ -847,6 +847,9 @@
           group.variants.sort(function (a, b) {
             var byIntegration = (b.integration || 0) - (a.integration || 0);
             if (byIntegration) return byIntegration;
+            // hand-set quality order (higher rank = better, shown first)
+            var byRank = (b.rank || 0) - (a.rank || 0);
+            if (byRank) return byRank;
             // same length: an unlabelled version wins, then alphabetical label
             var av = String(a.variant || '').toLowerCase();
             var bv = String(b.variant || '').toLowerCase();

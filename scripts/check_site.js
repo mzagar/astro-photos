@@ -304,6 +304,8 @@ data.photos.forEach((p) => {
 byGroup.forEach((v) => v.sort((a, b) => {
   const byIntegration = (b.integration || 0) - (a.integration || 0);
   if (byIntegration) return byIntegration;
+  const byRank = (b.rank || 0) - (a.rank || 0);
+  if (byRank) return byRank;
   const av = String(a.variant || '').toLowerCase();
   const bv = String(b.variant || '').toLowerCase();
   if (!av && bv) return -1;
@@ -502,7 +504,8 @@ if (pairIndex >= 0) {
 }
 
 /* label-only variants without an integration stamp (Moon zoom levels) */
-const zoomIndex = sortedGroups.findIndex((v) => v.length > 1 && v.every((p) => !p.integration && p.variant));
+const zoomIndex = sortedGroups.findIndex((v) => v.length > 1 &&
+  v.every((p) => !p.integration && p.variant && /^\d+x/.test(p.variant)));
 if (zoomIndex >= 0) {
   const expected = sortedGroups[zoomIndex].map((p) => p.variant);
   allCards[zoomIndex].dispatch('click', {});

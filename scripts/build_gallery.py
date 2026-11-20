@@ -318,6 +318,7 @@ def main() -> None:
                 "title_hr": previous.get("title_hr", ""),
                 "date": previous.get("date", date),
                 "time": previous.get("time", ""),
+                "rank": previous.get("rank", 0),
                 "caption": previous.get("caption", ""),
                 "caption_hr": previous.get("caption_hr", ""),
                 "object": slugify(default_title),
