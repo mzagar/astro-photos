@@ -809,6 +809,24 @@ window.GALLERY_DATA = {
       "variant": "fits 1726",
       "width": 360,
       "height": 640
+    },
+    {
+      "file": "photos/2026-11-20-moon-lucky-1655.jpg",
+      "view": "photos/view/2026-11-20-moon-lucky-1655.jpg",
+      "thumb": "photos/thumbs/2026-11-20-moon-lucky-1655.jpg",
+      "title": "The Moon",
+      "title_hr": "Mjesec",
+      "date": "2026-11-20",
+      "time": "16:55",
+      "rank": 75,
+      "caption": "16:55 · lucky imaging: the best 600 of 3,990 raw frames from the 5-minute capture, aligned and stacked here, then deconvolved and sharpened.",
+      "caption_hr": "16:55 · lucky imaging: najboljih 600 od 3.990 sirovih frejmova iz peterominutne snimke, poravnato i složeno ovdje, pa dekonvoluirano i izoštreno.",
+      "object": "moon",
+      "group": "moon-2026-11-20",
+      "integration": null,
+      "variant": "lucky 1655",
+      "width": 360,
+      "height": 640
     }
   ]
 };
