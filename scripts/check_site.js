@@ -134,6 +134,9 @@ function harness(dataSource, options = {}) {
   galleryHeading.setAttribute('data-i18n', 'galleryHeading');
 
   const grid = mount('grid', 'grid', 'div');
+  const solarSection = mount('solar-section', 'gallery', 'section');
+  const solarGrid = mount('grid-solar', 'grid', 'div', solarSection);
+  solarSection.hidden = true;
   const footerEl = mount('site-footer', '', 'p', mount('', '', 'footer'));
   footerEl.setAttribute('data-i18n', 'footer');
   mount('copyright-year', '', 'span');
@@ -207,7 +210,8 @@ function harness(dataSource, options = {}) {
 
   return {
     tree, document, body, sandbox, storage,
-    strip: tree['#grid'], lbCaption: tree['#lb-caption'],
+    strip: tree['#grid'], solarStrip: tree['#grid-solar'],
+    solarSection, lbCaption: tree['#lb-caption'],
     langButtons: [enButton, hrButton]
   };
 }
@@ -310,27 +314,52 @@ const groupList = Array.from(byGroup.values());
 groupList.sort((a, b) => (String(b[0].date || '') + ' ' + String(b[0].time || ''))
   .localeCompare(String(a[0].date || '') + ' ' + String(a[0].time || '')));
 const covers = groupList.map((v) => v[0]);
+const objectMeta = real.sandbox.window.OBJECTS;
+const categoryOf = (cover) => (objectMeta[cover.object] && objectMeta[cover.object].category) || 'deep';
+const deepGroups = groupList.filter((v) => categoryOf(v[0]) !== 'solar');
+const solarGroups = groupList.filter((v) => categoryOf(v[0]) === 'solar');
+const sortedGroups = deepGroups.concat(solarGroups);
 
-check('one card per object', realCards.length === groupList.length, realCards.length + ' vs ' + groupList.length);
-check('cards use the cover thumbnail', realCards.every((c, i) => c.children[0].children[0].src === covers[i].thumb));
-check('cards show title and date', realCards.every((c, i) => {
+const deepCards = cardsOf(real.strip);
+const solarCards = cardsOf(real.solarStrip);
+check('one card per object and night',
+  deepCards.length === deepGroups.length && solarCards.length === solarGroups.length,
+  `${deepCards.length}/${deepGroups.length} deep, ${solarCards.length}/${solarGroups.length} solar`);
+check('the moon lives in the solar section', solarCards.length >= 1 &&
+  solarCards.every((c) => /Moon|Mjesec/i.test(c.children[1].children[0].textContent)),
+  solarCards.map((c) => c.children[1].children[0].textContent).join(','));
+check('deep-sky grid holds everything else',
+  deepCards.every((c) => !/Moon|Mjesec/i.test(c.children[1].children[0].textContent)));
+check('solar section is visible', real.solarSection.hidden === false);
+const allCards = deepCards.concat(solarCards);
+const allCovers = deepGroups.concat(solarGroups).map((v) => v[0]);
+check('cards use the cover thumbnail',
+  allCards.every((c, i) => c.children[0].children[0].src === allCovers[i].thumb));
+check('cards show title and date', allCards.every((c, i) => {
   const cap = c.children[1];
-  return cap.children[0].textContent === covers[i].title && cap.children[1].textContent.includes(covers[i].date);
+  return cap.children[0].textContent === allCovers[i].title && cap.children[1].textContent.includes(allCovers[i].date);
 }));
-check('only multi-version cards carry a badge', realCards.every((c, i) => {
+check('only multi-version cards carry a badge', allCards.every((c, i) => {
   const badge = framePart(c, 'badge');
-  return groupList[i].length > 1 ? Boolean(badge && /versions$/.test(badge.textContent)) : !badge;
+  const groups = deepGroups.concat(solarGroups);
+  return groups[i].length > 1 ? Boolean(badge && /versions$/.test(badge.textContent)) : !badge;
 }));
 check('cover is the longest integration', groupList.every((v) => v.length < 2 ||
   (v[0].integration || 0) === Math.max(...v.map((p) => p.integration || 0))));
 const keyOf = (p) => String(p.date || '') + ' ' + String(p.time || '');
-const cardKeys = realCards.map((c) => {
+const cardKeys = allCards.map((c) => {
   const title = c.children[1].children[0].textContent;
   const cover = covers.find((p) => p.title === title);
   return keyOf(cover);
 });
-check('cards run from the newest capture to the oldest',
-  cardKeys.every((k, i) => i === 0 || cardKeys[i - 1] >= k), cardKeys.join(' | '));
+const keysOf = (list, coverList) => list.map((c) => {
+  const title = c.children[1].children[0].textContent;
+  const cover = coverList.find((p) => p.title === title);
+  return keyOf(cover);
+});
+check('each grid runs from the newest capture to the oldest',
+  keysOf(deepCards, deepGroups.map((v) => v[0])).every((k, i, arr) => i === 0 || arr[i - 1] >= k) &&
+  keysOf(solarCards, solarGroups.map((v) => v[0])).every((k, i, arr) => i === 0 || arr[i - 1] >= k));
 check('the newest object is the first tile', cardKeys[0] === covers.map(keyOf).reduce((a, b) => (a > b ? a : b)),
   cardKeys[0]);
 check('the oldest object is the last tile',
@@ -350,7 +379,7 @@ check('document title follows the interface strings', real.document.title === en
 check('page language is declared', real.document.documentElement.lang === 'en');
 
 const objects = real.sandbox.window.OBJECTS;
-const groupKeys = Array.from(new Set(data.photos.map((p) => p.group)));
+const groupKeys = Array.from(new Set(data.photos.map((p) => p.object)));
 check('every object has a description', groupKeys.every((k) => objects[k]),
   groupKeys.filter((k) => !objects[k]).join(','));
 check('no descriptions without an object', Object.keys(objects).every((k) => groupKeys.includes(k)),
@@ -375,7 +404,7 @@ check('web images credit the author', metaSample.includes(Buffer.from('Mario Ža
 const missing = data.photos.flatMap((p) => [p.file, p.thumb]).filter((f) => !fs.existsSync(path + '/' + f));
 check('all referenced image files exist on disk', missing.length === 0, missing.join(', '));
 
-realCards[0].dispatch('click', {});
+allCards[0].dispatch('click', {});
 const rlb = real.tree['#lightbox'];
 check('card click opens the lightbox', rlb.hidden === false);
 check('lightbox shows the view layer', real.tree['#lb-img'].src === covers[0].view, real.tree['#lb-img'].src);
@@ -389,10 +418,10 @@ check('caption carries title, date, text and hint',
   captionText(real.lbCaption).includes(covers[0].date) &&
   captionText(real.lbCaption).includes('full size and zoom'), captionText(real.lbCaption));
 check('tiles with a description carry the info dot',
-  realCards.every((c, i) => Boolean(findClass(c, 'info-dot')) === Boolean(objects[groupList[i][0].group])));
+  allCards.every((c, i) => Boolean(findClass(c, 'info-dot')) === Boolean(objects[allCovers[i].object])));
 
-const tipCard = realCards.find((c, i) => objects[groupList[i][0].group]);
-const tipInfo = objects[groupList[realCards.indexOf(tipCard)][0].group];
+const tipCard = allCards.find((c, i) => objects[allCovers[i].object]);
+const tipInfo = objects[allCovers[allCards.indexOf(tipCard)].object];
 const tip = findClass(tipCard, 'info-tip');
 check('the dot carries a hover tooltip', tip !== null);
 if (tip) {
@@ -410,9 +439,9 @@ check('hover styles exist for the tooltip', /\.info:hover \.info-tip/.test(css))
 check('touch devices hide the dot', /@media \(hover: none\) \{\s*\.info \{ display: none; \}/.test(css));
 check('the dot uses a help cursor, not the zoom cursor', /\.info-dot \{[^}]*cursor: help/.test(css));
 
-const aboutIdx = groupList.findIndex((v) => objects[v[0].group]);
+const aboutIdx = sortedGroups.findIndex((v) => objects[v[0].object]);
 real.document.dispatch('keydown', { key: 'Escape' });
-realCards[aboutIdx].dispatch('click', {});
+allCards[aboutIdx].dispatch('click', {});
 const about = aboutBox(real.lbCaption);
 check('the lightbox shows an About block', about !== null);
 if (about) {
@@ -421,7 +450,7 @@ if (about) {
   const text = parts.find((n) => (n.className || '') === 'about-text');
   const facts = parts.find((n) => (n.className || '') === 'about-facts');
   const link = parts.find((n) => (n.className || '') === 'about-link');
-  const info = objects[groupList[aboutIdx][0].group];
+  const info = objects[sortedGroups[aboutIdx][0].object];
   check('About block names the object', title && title.textContent.includes(info.title), title && title.textContent);
   check('About block carries the text', text && text.textContent === info.about);
   check('About block lists the facts', facts && facts.children.length === info.facts.length,
@@ -434,53 +463,53 @@ if (about) {
     link.target === '_blank' && link.rel === 'noopener', link && link.href);
 }
 
-const singleIndex = groupList.findIndex((v) => v.length === 1);
+const singleIndex = sortedGroups.findIndex((v) => v.length === 1);
 real.document.dispatch('keydown', { key: 'Escape' });
-realCards[singleIndex].dispatch('click', {});
+allCards[singleIndex].dispatch('click', {});
 check('no exposure chips when there is one version', variantsBox(real.lbCaption) === null,
-  groupList[singleIndex][0].group);
+  sortedGroups[singleIndex][0].object);
 
 real.document.dispatch('keydown', { key: 'Escape' });
 check('Escape closes the lightbox', rlb.hidden === true);
 check('scroll lock released', !real.body.classList.contains('locked'));
 
 /* same integration, different crop (M27 pair) */
-const pairIndex = groupList.findIndex((v) => v.length > 1 && v[0].integration &&
+const pairIndex = sortedGroups.findIndex((v) => v.length > 1 && v[0].integration &&
   v.every((p) => p.integration === v[0].integration && p.variant));
 if (pairIndex >= 0) {
   const chipsOf = (cap) => {
     const box = variantsBox(cap);
     return box ? box.children.filter((c) => c.tagName === 'BUTTON').map((c) => c.textContent) : [];
   };
-  realCards[pairIndex].dispatch('click', {});
+  allCards[pairIndex].dispatch('click', {});
   const labels = chipsOf(real.lbCaption);
   check('equal-length variants get distinct chip labels',
-    labels.length === groupList[pairIndex].length && new Set(labels).size === labels.length, labels.join(' | '));
-  check('chip labels carry the crop name', groupList[pairIndex].every((p) =>
+    labels.length === sortedGroups[pairIndex].length && new Set(labels).size === labels.length, labels.join(' | '));
+  check('chip labels carry the crop name', sortedGroups[pairIndex].every((p) =>
     labels.some((l) => l.includes(p.variant) || !p.variant)), labels.join(' | '));
   check('cover of the pair is the crop, not the wide field',
-    groupList[pairIndex][0].variant === 'crop', groupList[pairIndex].map((p) => p.variant).join(','));
+    sortedGroups[pairIndex][0].variant === 'crop', sortedGroups[pairIndex].map((p) => p.variant).join(','));
   const chipBox = variantsBox(real.lbCaption);
   chipBox.children.filter((c) => c.tagName === 'BUTTON')[1].dispatch('click', {});
   check('switching crop loads the wide field',
-    real.tree['#lb-img'].src === groupList[pairIndex][1].view, real.tree['#lb-img'].src);
+    real.tree['#lb-img'].src === sortedGroups[pairIndex][1].view, real.tree['#lb-img'].src);
   real.document.dispatch('keydown', { key: 'Escape' });
 }
 
 /* label-only variants without an integration stamp (Moon zoom levels) */
-const zoomIndex = groupList.findIndex((v) => v.length > 1 && v.every((p) => !p.integration && p.variant));
+const zoomIndex = sortedGroups.findIndex((v) => v.length > 1 && v.every((p) => !p.integration && p.variant));
 if (zoomIndex >= 0) {
-  const expected = groupList[zoomIndex].map((p) => p.variant);
-  realCards[zoomIndex].dispatch('click', {});
+  const expected = sortedGroups[zoomIndex].map((p) => p.variant);
+  allCards[zoomIndex].dispatch('click', {});
   const box = variantsBox(real.lbCaption);
   const labels = box ? box.children.filter((c) => c.tagName === 'BUTTON').map((c) => c.textContent) : [];
   check('zoom variants are listed numerically, not alphabetically',
     labels.join(',') === expected.join(',') && labels[0] === '1x', labels.join(','));
   check('zoom chips carry no empty integration prefix', labels.every((l) => !/^·|\s·\s*$|min/.test(l)), labels.join(','));
-  check('the widest field is the cover', groupList[zoomIndex][0].variant === '1x', expected.join(','));
+  check('the widest field is the cover', sortedGroups[zoomIndex][0].variant === '1x', expected.join(','));
   check('cover card shows the object date only',
-    realCards[zoomIndex].children[1].children[1].textContent === groupList[zoomIndex][0].date,
-    realCards[zoomIndex].children[1].children[1].textContent);
+    allCards[zoomIndex].children[1].children[1].textContent === sortedGroups[zoomIndex][0].date,
+    allCards[zoomIndex].children[1].children[1].textContent);
   real.document.dispatch('keydown', { key: 'Escape' });
 }
 
@@ -572,7 +601,7 @@ check('second Escape closes the lightbox', synLb.hidden === true);
 
 /* ---------------- masonry layout ---------------- */
 section('masonry layout');
-const gridCards = cardsOf(real.strip);
+const gridCards = deepCards;
 check('every tile got a row span', gridCards.every((c) => /^span \d+$/.test(c.style.gridRowEnd || '')),
   gridCards.map((c) => c.style.gridRowEnd).join(','));
 const expectedSpan = (card, photo) => {
@@ -581,11 +610,11 @@ const expectedSpan = (card, photo) => {
   return 'span ' + Math.ceil((height + 12) / 6);
 };
 check('row span follows the picture aspect ratio',
-  gridCards.every((c, i) => c.style.gridRowEnd === expectedSpan(c, covers[i])),
-  gridCards.map((c) => c.style.gridRowEnd).join(','));
-const tall = gridCards.map((c, i) => ({
+  deepCards.every((c, i) => c.style.gridRowEnd === expectedSpan(c, deepGroups[i][0])),
+  deepCards.map((c) => c.style.gridRowEnd).join(','));
+const tall = deepCards.map((c, i) => ({
   span: parseInt(String(c.style.gridRowEnd).replace('span ', ''), 10),
-  ratio: covers[i].height / covers[i].width
+  ratio: deepGroups[i][0].height / deepGroups[i][0].width
 }));
 check('portrait tiles span more rows than square ones',
   Math.max(...tall.filter((t) => t.ratio > 1.2).map((t) => t.span)) >
@@ -616,7 +645,7 @@ check('Croatian button is marked active',
 check('html lang attribute follows the language', hrRun.document.documentElement.lang === 'hr');
 check('Croatian photo titles reach the tiles',
   cardsOf(hrRun.strip)[0].children[1].children[0].textContent ===
-  hrRun.sandbox.window.GALLERY_DATA.photos.find((p) => p.group === 'ic443-jellyfish').title_hr,
+  hrRun.sandbox.window.GALLERY_DATA.photos.find((p) => p.object === 'ic443-jellyfish').title_hr,
   cardsOf(hrRun.strip)[0].children[1].children[0].textContent);
 check('Croatian version label is pluralised',
   findClass(cardsOf(hrRun.strip)[0], 'badge').textContent === '2 verzije',
@@ -657,7 +686,7 @@ check('clicking HR switches the page', enRun.document.documentElement.lang === '
 check('clicking HR saves the choice', enRun.storage['astro-lang'] === 'hr', JSON.stringify(enRun.storage));
 check('clicking HR repaints the tiles',
   cardsOf(enRun.strip)[0].children[1].children[0].textContent ===
-  enRun.sandbox.window.GALLERY_DATA.photos.find((p) => p.group === 'ic443-jellyfish').title_hr);
+  enRun.sandbox.window.GALLERY_DATA.photos.find((p) => p.object === 'ic443-jellyfish').title_hr);
 enRun.langButtons[0].dispatch('click', {});
 check('clicking EN switches back', enRun.document.documentElement.lang === 'en');
 check('switching back restores the English title',

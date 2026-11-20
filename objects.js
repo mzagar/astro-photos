@@ -169,6 +169,7 @@ window.OBJECTS = {
     facts_hr: [["Udaljenost", "≈5 000 svjetlosnih godina"], ["Starost", "≈30 000 godina"], ["Tip", "Ostatak supernove"], ["Zviježđe", "Blizanci"]]
   },
   "moon": {
+    category: "solar",
     title: "The Moon",
     about:
       "The Moon is the only other world people have walked on and it is tidally " +

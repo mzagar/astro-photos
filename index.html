@@ -625,10 +625,19 @@
 
     <section class="gallery" aria-labelledby="gallery-heading">
       <div class="gallery-head">
-        <h2 id="gallery-heading" data-i18n="galleryHeading">Gallery</h2>
+        <h2 id="gallery-heading" data-i18n="galleryHeading">Deep sky</h2>
       </div>
 
       <div class="grid" id="grid" role="group" aria-label="Photos" data-i18n-aria="photos"></div>
+    </section>
+
+    <section class="gallery" id="solar-section" aria-labelledby="solar-heading" hidden>
+      <div class="gallery-head">
+        <h2 id="solar-heading" data-i18n="solarHeading">Solar system</h2>
+      </div>
+
+      <div class="grid" id="grid-solar" role="group" aria-label="Solar system"
+           data-i18n-aria="solarPhotos"></div>
     </section>
 
     <footer>
@@ -722,6 +731,8 @@
       }
 
       var grid = document.getElementById('grid');
+      var solarGrid = document.getElementById('grid-solar');
+      var solarSection = document.getElementById('solar-section');
       var cards = [];
 
       var lightbox = document.getElementById('lightbox');
@@ -844,6 +855,9 @@
             return compareLabels(av, bv) || String(a.file).localeCompare(String(b.file));
           });
           group.cover = group.variants[0];
+          group.object = group.cover.object || group.key;
+          var meta = objects[group.object];
+          group.category = (meta && meta.category) || 'deep';
         });
         out.sort(function (a, b) {
           // newest first; the time of day breaks ties within one night
@@ -864,16 +878,24 @@
 
       function renderTiles() {
         grid.textContent = '';
+        solarGrid.textContent = '';
         cards = [];
+        var deep = groups.filter(function (group) { return group.category !== 'solar'; });
+        var solar = groups.filter(function (group) { return group.category === 'solar'; });
+
         if (!groups.length) {
           grid.append(el('p', 'empty', t('empty')));
+          solarSection.hidden = true;
           return;
         }
-        groups.forEach(buildTile);
+
+        deep.forEach(function (group, index) { buildTile(group, groups.indexOf(group), grid); });
+        solar.forEach(function (group) { buildTile(group, groups.indexOf(group), solarGrid); });
+        solarSection.hidden = solar.length === 0;
         layout();
       }
 
-      function buildTile(group, index) {
+      function buildTile(group, index, target) {
         var cover = group.cover;
         var card = el('button', 'card');
         card.type = 'button';
@@ -891,7 +913,7 @@
         if (group.variants.length > 1) {
           frame.append(el('span', 'badge', t('versions')(group.variants.length)));
         }
-        var info = objectInfo(group.key);
+        var info = objectInfo(group.object || group.key);
         if (info) {
           var badge = el('span', 'info');
           badge.setAttribute('aria-hidden', 'true');
@@ -915,9 +937,10 @@
         );
         card.append(frame, caption);
         card.addEventListener('click', function () { open(index); });
-        grid.append(card);
+        target.append(card);
         cards.push({
           node: card,
+          grid: target,
           ratio: (cover.width && cover.height) ? cover.height / cover.width : 1.25
         });
       }
@@ -928,11 +951,15 @@
       var TILE_GAP = 12;
 
       function layout() {
-        if (!cards.length) return;
-        var width = cards[0].node.getBoundingClientRect().width - 2; // minus the 1px border
-        if (!width) return;
+        var measured = new Map();
         cards.forEach(function (item) {
-          var height = Math.round(width * item.ratio);
+          if (!measured.has(item.grid)) {
+            var first = item.grid.querySelector('.card');
+            measured.set(item.grid, first ? first.getBoundingClientRect().width - 2 : 0);
+          }
+          var column = measured.get(item.grid);
+          if (!column) return;
+          var height = Math.round(column * item.ratio);
           item.node.style.gridRowEnd = 'span ' + Math.ceil((height + TILE_GAP) / ROW_UNIT);
         });
       }
@@ -983,7 +1010,7 @@
           lbCaption.append(chips);
         }
 
-        var info = objectInfo(group.key);
+        var info = objectInfo(group.object || group.key);
         if (info) {
           var about = el('div', 'about');
           var aboutName = info.title || photoTitle(photo);

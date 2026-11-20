@@ -122,7 +122,12 @@ them after a rename.
   renderings of the same object. Add each as its own variant with a descriptive
   label (`-7m`, `-21m`, `-portrait`, `-wide`, `-boosted`), keep every existing
   one, and give each a caption saying what is different.
-- One tile per `group`, regardless of capture date.
+- A tile is one object **on one night**: `group` = `<object>-<date>`, so a second
+  night of the same object, and every new Moon phase, becomes its own tile.
+  `object` stays the stable key used for the `About` text and the category.
+- `objects.js` may set `category: "solar"` (the Moon, the Sun, planets). Those
+  tiles render in a separate **Solar system** section below the deep-sky grid;
+  the section hides itself when there is nothing to show.
 - Variants are sorted by integration descending, then an unlabelled version first,
   then by label (numeric-aware, so `2x` precedes `10x`). The first variant is the
   **cover**: its thumbnail, title, date and time represent the tile.

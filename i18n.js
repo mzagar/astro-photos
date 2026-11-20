@@ -25,7 +25,8 @@ window.I18N = {
         "Each picture is a stack of many short exposures, stretched and denoised in " +
         "the Seestar app, the watermark in the corner is added by the app itself, so " +
         "the object, time and integration travel with the file.",
-      galleryHeading: "Gallery",
+      galleryHeading: "Deep sky",
+      solarHeading: "Solar system",
       place: "Donja Stubica, Croatia",
       map: "light pollution map ↗",
       empty: "No photos yet. Drop exports into masters/ and run scripts/build_gallery.py.",
@@ -53,7 +54,8 @@ window.I18N = {
         "Svaka je snimka složena od mnogo kratkih ekspozicija, razvučena i očišćena od " +
         "šuma u aplikaciji Seestar. Vodeni žig u kutu dodaje sama aplikacija, pa uz " +
         "snimku uvijek ostaju zabilježeni objekt, vrijeme i trajanje integracije.",
-      galleryHeading: "Galerija",
+      galleryHeading: "Duboko nebo",
+      solarHeading: "Sunčev sustav",
       place: "Donja Stubica, Hrvatska",
       map: "karta svjetlosnog onečišćenja ↗",
       empty: "Još nema snimaka. Ubaci izvoze u masters/ i pokreni scripts/build_gallery.py.",
@@ -81,6 +83,7 @@ window.I18N = {
     en: {
       lang: "Language",
       photos: "Photos",
+      solarPhotos: "Solar system",
       viewer: "Photo viewer",
       close: "Close",
       prev: "Previous photo",
@@ -96,6 +99,7 @@ window.I18N = {
     hr: {
       lang: "Jezik",
       photos: "Snimke",
+      solarPhotos: "Sunčev sustav",
       viewer: "Pregled snimke",
       close: "Zatvori",
       prev: "Prethodna snimka",
