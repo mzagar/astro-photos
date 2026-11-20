@@ -31,7 +31,7 @@ window.I18N = {
       map: "light pollution map ↗",
       empty: "No photos yet. Drop exports into masters/ and run scripts/build_gallery.py.",
       versions: function (n) { return n + " versions"; },
-      exposures: "Exposures",
+      versionsLabel: "Versions",
       hintZoom: "Click the image for full size and zoom",
       hintSwitch: "switch version above",
       aboutTitle: "About {name}",
@@ -67,7 +67,7 @@ window.I18N = {
         if (unit >= 2 && unit <= 4) return n + " verzije";
         return n + " verzija";
       },
-      exposures: "Ekspozicije",
+      versionsLabel: "Verzije",
       hintZoom: "Klikni snimku za punu veličinu i zumiranje",
       hintSwitch: "promijeni verziju iznad",
       aboutTitle: "O objektu: {name}",

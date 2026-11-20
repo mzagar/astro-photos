@@ -995,7 +995,7 @@
 
         if (group.variants.length > 1) {
           var chips = el('div', 'variants');
-          chips.append(el('span', 'label', t('exposures')));
+          chips.append(el('span', 'label', t('versionsLabel')));
           group.variants.forEach(function (variant, index) {
             var chipLabel = variantLabel(variant) || variant.date || 'version';
             var chip = el('button', '', chipLabel);
