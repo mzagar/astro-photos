@@ -360,8 +360,13 @@ const keysOf = (list, coverList) => list.map((c) => {
 check('each grid runs from the newest capture to the oldest',
   keysOf(deepCards, deepGroups.map((v) => v[0])).every((k, i, arr) => i === 0 || arr[i - 1] >= k) &&
   keysOf(solarCards, solarGroups.map((v) => v[0])).every((k, i, arr) => i === 0 || arr[i - 1] >= k));
-check('the newest object is the first tile', cardKeys[0] === covers.map(keyOf).reduce((a, b) => (a > b ? a : b)),
-  cardKeys[0]);
+const newestKey = groupList.map((v) => keyOf(v[0])).reduce((a, b) => (a > b ? a : b));
+const newestGroup = groupList.find((v) => keyOf(v[0]) === newestKey);
+const newestIsSolar = categoryOf(newestGroup[0]) === 'solar';
+const newestFirst = (newestIsSolar ? solarCards : deepCards)[0];
+check('the newest object leads its own grid',
+  newestFirst.children[1].children[0].textContent === newestGroup[0].title,
+  newestFirst.children[1].children[0].textContent + ' vs ' + newestGroup[0].title);
 check('the oldest object is the last tile',
   keyOf(covers[covers.length - 1]) === covers.map(keyOf).reduce((a, b) => (a < b ? a : b)),
   covers[covers.length - 1].group);
@@ -391,14 +396,14 @@ check('descriptions stay short', Object.values(objects).every((o) => o.about.spl
   Object.entries(objects).filter(([, o]) => o.about.split(/\s+/).length > 60).map(([k]) => k).join(','));
 
 /* every published photo carries a title and description in its metadata */
-const metaSample = fs.readFileSync(path + '/' + covers[0].file);
+const metaSample = fs.readFileSync(path + '/' + allCovers[0].file);
 check('web images embed IPTC metadata',
   metaSample.includes(Buffer.from('8BIM')) && metaSample.includes(Buffer.from('Photoshop 3.0')));
 check('web images embed the title as IPTC ObjectName',
-  metaSample.includes(Buffer.from(covers[0].title)));
+  metaSample.includes(Buffer.from(allCovers[0].title)));
 check('web images embed a description',
-  metaSample.includes(Buffer.from(covers[0].caption.slice(0, 40))),
-  covers[0].caption.slice(0, 40));
+  metaSample.includes(Buffer.from(allCovers[0].caption.slice(0, 40))),
+  allCovers[0].caption.slice(0, 40));
 check('web images credit the author', metaSample.includes(Buffer.from('Mario Žagar')));
 
 const missing = data.photos.flatMap((p) => [p.file, p.thumb]).filter((f) => !fs.existsSync(path + '/' + f));
@@ -407,15 +412,15 @@ check('all referenced image files exist on disk', missing.length === 0, missing.
 allCards[0].dispatch('click', {});
 const rlb = real.tree['#lightbox'];
 check('card click opens the lightbox', rlb.hidden === false);
-check('lightbox shows the view layer', real.tree['#lb-img'].src === covers[0].view, real.tree['#lb-img'].src);
+check('lightbox shows the view layer', real.tree['#lb-img'].src === allCovers[0].view, real.tree['#lb-img'].src);
 check('the view layer is lighter than the full file',
-  fs.statSync(path + '/' + covers[0].view).size < fs.statSync(path + '/' + covers[0].file).size);
+  fs.statSync(path + '/' + allCovers[0].view).size < fs.statSync(path + '/' + allCovers[0].file).size);
 check('every photo has a view layer',
   data.photos.every((p) => p.view && fs.existsSync(path + '/' + p.view)));
 check('body scroll is locked', real.body.classList.contains('locked'));
 check('caption carries title, date, text and hint',
-  captionText(real.lbCaption).includes(covers[0].title) &&
-  captionText(real.lbCaption).includes(covers[0].date) &&
+  captionText(real.lbCaption).includes(allCovers[0].title) &&
+  captionText(real.lbCaption).includes(allCovers[0].date) &&
   captionText(real.lbCaption).includes('full size and zoom'), captionText(real.lbCaption));
 check('tiles with a description carry the info dot',
   allCards.every((c, i) => Boolean(findClass(c, 'info-dot')) === Boolean(objects[allCovers[i].object])));

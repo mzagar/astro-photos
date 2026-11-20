@@ -645,6 +645,23 @@ window.GALLERY_DATA = {
       "variant": "",
       "width": 360,
       "height": 640
+    },
+    {
+      "file": "photos/2026-11-20-moon-fits.jpg",
+      "view": "photos/view/2026-11-20-moon-fits.jpg",
+      "thumb": "photos/thumbs/2026-11-20-moon-fits.jpg",
+      "title": "The Moon",
+      "title_hr": "Mjesec",
+      "date": "2026-11-20",
+      "time": "16:46",
+      "caption": "Stacked from the telescope's 16-bit video stack, then stretched, cleaned of dead pixels and gently sharpened here · captured 20 Nov 2026, 16:46.",
+      "caption_hr": "Složeno iz 16-bitnog video stacka teleskopa, pa rastegnuto, očišćeno od mrtvih piksela i nježno izoštreno ovdje · snimljeno 20. 11. 2026. u 16:46.",
+      "object": "moon",
+      "group": "moon-2026-11-20",
+      "integration": null,
+      "variant": "fits",
+      "width": 360,
+      "height": 640
     }
   ]
 };
