@@ -505,6 +505,24 @@ window.GALLERY_DATA = {
       "height": 640
     },
     {
+      "file": "photos/2026-11-18-moon-lucky-1904.jpg",
+      "view": "photos/view/2026-11-18-moon-lucky-1904.jpg",
+      "thumb": "photos/thumbs/2026-11-18-moon-lucky-1904.jpg",
+      "title": "The Moon",
+      "title_hr": "Mjesec",
+      "date": "2026-11-18",
+      "time": "19:04",
+      "rank": 5,
+      "caption": "19:04 · all 415 frames of the video aligned and stacked, then deconvolved and sharpened here. The MP4 was compressed, so this one starts from less data than the 20 Nov stacks.",
+      "caption_hr": "19:04 · svih 415 frejmova videa poravnato i složeno, pa dekonvoluirano i izoštreno ovdje. MP4 je bio komprimiran, pa ova kreće od manje podataka nego stackovi od 20. 11.",
+      "object": "moon",
+      "group": "moon-2026-11-18",
+      "integration": null,
+      "variant": "lucky 1904",
+      "width": 360,
+      "height": 640
+    },
+    {
       "file": "photos/2026-11-19-ic405-plamtecica-53m-portrait.jpg",
       "view": "photos/view/2026-11-19-ic405-plamtecica-53m-portrait.jpg",
       "thumb": "photos/thumbs/2026-11-19-ic405-plamtecica-53m-portrait.jpg",
