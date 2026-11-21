@@ -1066,7 +1066,16 @@
 
       function step(delta) {
         if (groupIndex < 0) return;
-        groupIndex = (groupIndex + delta + groups.length) % groups.length;
+        var current = groups[groupIndex];
+        if (!current) return;
+        // stay inside the section the viewer was opened from
+        var siblings = groups.filter(function (group) {
+          return group.category === current.category;
+        });
+        var position = siblings.indexOf(current);
+        if (position < 0) return;
+        var next = siblings[(position + delta + siblings.length) % siblings.length];
+        groupIndex = groups.indexOf(next);
         variantIndex = 0;
         render();
       }

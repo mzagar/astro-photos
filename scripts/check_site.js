@@ -480,6 +480,20 @@ real.document.dispatch('keydown', { key: 'Escape' });
 check('Escape closes the lightbox', rlb.hidden === true);
 check('scroll lock released', !real.body.classList.contains('locked'));
 
+/* navigation stays inside its section */
+const solarIdx = sortedGroups.findIndex((v) => categoryOf(v[0]) === 'solar');
+if (solarIdx >= 0) {
+  allCards[solarIdx].dispatch('click', {});
+  const before = real.tree['#lb-img'].src;
+  real.document.dispatch('keydown', { key: 'ArrowRight' });
+  const after = real.tree['#lb-img'].src;
+  const solarFiles = solarGroups.map((v) => v[0].view);
+  check('stepping from the solar section stays in solar',
+    solarFiles.includes(after), after);
+  check('stepping changed the photo', before !== after, before + ' -> ' + after);
+  real.document.dispatch('keydown', { key: 'Escape' });
+}
+
 /* same integration, different crop (M27 pair) */
 const pairIndex = sortedGroups.findIndex((v) => v.length > 1 && v[0].integration &&
   v.every((p) => p.integration === v[0].integration && p.variant));
